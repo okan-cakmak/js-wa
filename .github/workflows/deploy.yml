@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Deploy Backend to AWS EC2 and Frontend to Netlify
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }} # Change this to your AWS region
-  BACKEND_ECR_REPOSITORY: wasp-app-backend # Change this to your backend ECR repository name
-  FRONTEND_ECR_REPOSITORY: wasp-app-frontend # Change this to your frontend ECR repository name
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  BACKEND_ECR_REPOSITORY: wasp-app-backend
   EC2_HOST: ${{ secrets.EC2_HOST }}
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -64,63 +63,7 @@ jobs:
         tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
         labels: ${{ steps.meta-backend.outputs.labels }}
 
-    # Create frontend Dockerfile and config first
-    - name: Create frontend Dockerfile
-      run: |
-        cat << EOF > .wasp/build/web-app/Dockerfile
-        FROM node:18.18.0-alpine3.17 as builder
-        WORKDIR /app
-        COPY . .
-        ENV NODE_ENV=production
-        RUN npm install
-        RUN npm run build
-
-        FROM nginx:alpine
-        COPY --from=builder /app/build /usr/share/nginx/html
-        COPY nginx.conf /etc/nginx/conf.d/default.conf
-        EXPOSE 80
-        CMD ["nginx", "-g", "daemon off;"]
-        EOF
-
-    - name: Create nginx config
-      run: |
-        cat << EOF > .wasp/build/web-app/nginx.conf
-        server {
-            listen 80;
-            root /usr/share/nginx/html;
-            index index.html;
-            
-            location / {
-                try_files \$uri \$uri/ /index.html;
-            }
-            
-            location /api {
-                proxy_pass http://wasp-app-backend:3001;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade \$http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host \$host;
-                proxy_cache_bypass \$http_upgrade;
-            }
-        }
-        EOF
-
-    # Build and push frontend image
-    - name: Docker meta for frontend
-      id: meta-frontend
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}
-
-    - name: Build and push frontend image
-      uses: docker/build-push-action@v4
-      with:
-        context: .wasp/build/web-app
-        push: true
-        tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}:${{ github.sha }}
-        labels: ${{ steps.meta-frontend.outputs.labels }}
-
-    - name: Deploy to EC2
+    - name: Deploy Backend to EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -133,13 +76,12 @@ jobs:
           # Create docker network if it doesn't exist
           docker network create wasp-network || true
           
-          # Pull the new images
+          # Pull the new backend image
           docker pull ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
-          docker pull ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}:${{ github.sha }}
           
-          # Stop and remove the old containers if they exist
-          docker stop wasp-app-backend wasp-app-frontend || true
-          docker rm wasp-app-backend wasp-app-frontend || true
+          # Stop and remove the old backend container if it exists
+          docker stop wasp-app-backend || true
+          docker rm wasp-app-backend || true
           
           # Run the backend container
           docker run -d \
@@ -149,15 +91,23 @@ jobs:
             -e PORT=3001 \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e WASP_WEB_CLIENT_URL=http://${{ secrets.EC2_HOST }} \
+            -e WASP_WEB_CLIENT_URL=https://${{ secrets.NETLIFY_SITE_NAME }}.netlify.app \
             ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
           
-          # Run the frontend container
-          docker run -d \
-            --name wasp-app-frontend \
-            --network wasp-network \
-            -p 80:80 \
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}:${{ github.sha }}
-          
           # Clean up old images
-          docker image prune -f 
+          docker image prune -f
+
+    # Deploy frontend to Netlify
+    - name: Install Netlify CLI
+      run: npm install -g netlify-cli
+
+    - name: Build Frontend for Production
+      run: |
+        cd .wasp/build/web-app
+        npm install
+        REACT_APP_API_URL=http://${{ secrets.EC2_HOST }}:3001 npm run build
+
+    - name: Deploy to Netlify
+      run: |
+        cd .wasp/build/web-app
+        netlify deploy --dir=build --prod --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }} --build.command="npm run build" --build.publish=build 
