@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION: us-east-1 # Change this to your AWS region
+  AWS_REGION: ${{ secrets.AWS_REGION }} # Change this to your AWS region
   BACKEND_ECR_REPOSITORY: wasp-app-backend # Change this to your backend ECR repository name
   FRONTEND_ECR_REPOSITORY: wasp-app-frontend # Change this to your frontend ECR repository name
   EC2_HOST: ${{ secrets.EC2_HOST }}
@@ -34,40 +34,44 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Install Wasp
-      run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh
-
-    - name: Build Wasp app
-      run: |
-        wasp build
-      env:
-        NODE_ENV: production
-        VITE_API_URL: http://${{ secrets.EC2_HOST }}:3001
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Wasp app
+      run: |
+        curl -sSL https://get.wasp-lang.dev/installer.sh | sh
+        wasp build
+
     # Build and push backend image
+    - name: Docker meta for backend
+      id: meta-backend
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}
+
     - name: Build and push backend image
       uses: docker/build-push-action@v4
       with:
         context: .wasp/build
         push: true
         tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        labels: ${{ steps.meta-backend.outputs.labels }}
 
-    # Build and push frontend image
+    # Create frontend Dockerfile and config first
     - name: Create frontend Dockerfile
       run: |
         cat << EOF > .wasp/build/web-app/Dockerfile
         FROM node:18.18.0-alpine3.17 as builder
         WORKDIR /app
         COPY . .
+        ENV NODE_ENV=production
         RUN npm install
         RUN npm run build
 
@@ -101,14 +105,20 @@ jobs:
         }
         EOF
 
+    # Build and push frontend image
+    - name: Docker meta for frontend
+      id: meta-frontend
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}
+
     - name: Build and push frontend image
       uses: docker/build-push-action@v4
       with:
         context: .wasp/build/web-app
         push: true
         tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.FRONTEND_ECR_REPOSITORY }}:${{ github.sha }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        labels: ${{ steps.meta-frontend.outputs.labels }}
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
