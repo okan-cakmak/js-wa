@@ -106,8 +106,4 @@ jobs:
         cd .wasp/build/web-app
         npm install
         REACT_APP_API_URL=http://${{ secrets.EC2_HOST }}:3001 npm run build
-
-    - name: Deploy to Netlify
-      run: |
-        cd .wasp/build/web-app
-        netlify deploy --dir=build --prod --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }} --build.command="npm run build" --build.publish=build 
+        netlify deploy --dir=build --prod --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }}
