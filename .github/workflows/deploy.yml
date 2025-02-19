@@ -92,6 +92,9 @@ jobs:
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             -e WASP_WEB_CLIENT_URL=https://${{ secrets.NETLIFY_SITE_NAME }}.netlify.app \
+            -e WASP_SERVER_URL=http://${{ secrets.EC2_HOST }}:3001 \
+            -e MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} \
+            -e MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} \
             ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
           
           # Clean up old images
@@ -99,7 +102,7 @@ jobs:
 
     # Deploy frontend to Netlify
     - name: Install Netlify CLI
-      run: npm install -g netlify-cli
+      run: npm install -g netlify-cli@16
 
     - name: Build Frontend for Production
       run: |
