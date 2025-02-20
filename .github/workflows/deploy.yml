@@ -8,6 +8,8 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   BACKEND_ECR_REPOSITORY: wasp-app-backend
+  FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+  BACKEND_URL: ${{ secrets.BACKEND_URL }}
   EC2_HOST: ${{ secrets.EC2_HOST }}
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -83,6 +85,9 @@ jobs:
           docker stop wasp-app-backend || true
           docker rm wasp-app-backend || true
           
+          echo "Debug: FRONTEND_URL = ${FRONTEND_URL}"
+          echo "Debug: BACKEND_URL = ${BACKEND_URL}"
+          
           # Run the backend container
           docker run -d \
             --name wasp-app-backend \
@@ -91,10 +96,12 @@ jobs:
             -e PORT=3001 \
             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e WASP_WEB_CLIENT_URL=https://${{ secrets.NETLIFY_SITE_NAME }}.netlify.app \
-            -e WASP_SERVER_URL=http://${{ secrets.EC2_HOST }}:3001 \
+            -e WASP_WEB_CLIENT_URL=${{ secrets.FRONTEND_URL }} \
+            -e WASP_SERVER_URL=${{ secrets.BACKEND_URL }} \
             -e MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} \
             -e MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} \
+            -e STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }} \
+            -e LEMONSQUEEZY_API_KEY=${{ secrets.LEMONSQUEEZY_API_KEY }} \
             ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
           
           # Clean up old images
@@ -108,5 +115,5 @@ jobs:
       run: |
         cd .wasp/build/web-app
         npm install
-        REACT_APP_API_URL=http://${{ secrets.EC2_HOST }}:3001 npm run build
+        REACT_APP_API_URL=${BACKEND_URL} npm run build
         netlify deploy --dir=build --prod --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }}
