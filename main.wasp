@@ -325,6 +325,17 @@ page ApplicationsPage {
   authRequired: true
 }
 
+route AppDetailRoute { path: "/applications/:id", to: AppDetailPage }
+page AppDetailPage {
+  component: import { AppDetailPage } from "@src/websocket-app/applications/AppDetailPage.tsx",
+  authRequired: true
+}
+
+query getApplication {
+  fn: import { getApplication } from "@src/websocket-app/applications/operations.js",
+  entities: [WebsocketApp]
+}
+
 query getApplications {
   fn: import { getApplications } from "@src/websocket-app/applications/operations.js",
   entities: [WebsocketApp]

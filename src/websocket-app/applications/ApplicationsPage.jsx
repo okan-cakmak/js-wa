@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import { useQuery } from 'wasp/client/operations'
 import { getApplications, updateApplication } from 'wasp/client/operations'
 import { CreateApplicationModal } from './CreateApplicationModal'
+import { useNavigate } from 'react-router-dom'
+import { routes } from 'wasp/client/router'
 
 export function ApplicationsPage() {
   const { data: applications, isLoading, error } = useQuery(getApplications)
   const [filter, setFilter] = useState('all') // 'all', 'active', 'inactive'
   const [searchTerm, setSearchTerm] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const navigate = useNavigate()
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -154,7 +157,11 @@ export function ApplicationsPage() {
             </thead>
             <tbody>
               {filteredApps.map((app) => (
-                <tr key={app.id} className='border-b border-stroke dark:border-strokedark'>
+                <tr 
+                  key={app.id} 
+                  className='border-b border-stroke dark:border-strokedark hover:bg-gray-50 dark:hover:bg-boxdark cursor-pointer'
+                  onClick={() => navigate(`/applications/${app.id.toString()}`)}
+                >
                   <td className='p-4 text-black dark:text-white'>{app.name}</td>
                   <td className='p-4 text-black dark:text-white'>{app.description}</td>
                   <td className='p-4'>
@@ -170,12 +177,13 @@ export function ApplicationsPage() {
                   </td>
                   <td className='p-4'>
                     <button
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation()
                         updateApplication({
                           id: app.id,
                           enabled: !app.enabled,
                         })
-                      }
+                      }}
                       className='text-primary hover:text-opacity-80'
                     >
                       {app.enabled ? 'Deactivate' : 'Activate'}

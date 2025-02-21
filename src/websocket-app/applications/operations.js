@@ -11,6 +11,29 @@ export const getApplications = async (args, context) => {
   })
 }
 
+export const getApplication = async ({ id }, context) => {
+  if (!context.user) {
+    throw new HttpError(401)
+  }
+
+  if (!id) {
+    throw new HttpError(400, 'Application ID is required')
+  }
+
+  const app = await context.entities.WebsocketApp.findFirst({
+    where: { 
+      id: id.toString(),
+      userId: context.user.id 
+    }
+  })
+
+  if (!app) {
+    throw new HttpError(404, 'Application not found')
+  }
+
+  return app
+}
+
 export const createApplication = async (args, context) => {
   if (!context.user) {
     throw new HttpError(401)
