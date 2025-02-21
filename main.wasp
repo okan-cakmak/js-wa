@@ -87,11 +87,11 @@ app OpenSaaS {
     // NOTE: "Dummy" provider is just for local development purposes.
     //   Make sure to check the server logs for the email confirmation url (it will not be sent to an address)!
     //   Once you are ready for production, switch to e.g. "SendGrid" or "Mailgun" providers. Check out https://docs.opensaas.sh/guides/email-sending/ .
-    provider: Mailgun,
+    provider: Dummy,
     defaultFrom: {
       name: "Open SaaS App",
       // When using a real provider, e.g. SendGrid, you must use the same email address that you configured your account to send out emails with!
-      email: "hello@jet-socket.com"
+      email: "me@example.com"
     },
   },
 }
@@ -368,3 +368,24 @@ query getAllWebsocketAppsByUser {
   entities: [WebsocketApp]
 }
 //#endregion
+
+route ApplicationsPage { path: "/applications", to: ApplicationsPage }
+page ApplicationsPage {
+  component: import { ApplicationsPage } from "@src/client/pages/ApplicationsPage.jsx",
+  authRequired: true
+}
+
+query getApplications {
+  fn: import { getApplications } from "@src/server/applications/operations.js",
+  entities: [WebsocketApp]
+}
+
+action updateApplication {
+  fn: import { updateApplication } from "@src/server/applications/operations.js",
+  entities: [WebsocketApp]
+}
+
+action createApplication {
+  fn: import { createApplication } from "@src/server/applications/operations.js",
+  entities: [WebsocketApp]
+}
