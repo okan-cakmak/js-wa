@@ -1,5 +1,4 @@
-import { WebsocketApp } from 'wasp/entities'
-import { HttpError } from 'wasp/server'
+import { HttpError } from 'wasp/server';
 
 export const getApplications = async (args, context) => {
   if (!context.user) {

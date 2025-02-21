@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useQuery } from 'wasp/client/operations'
-import { getApplications, createApplication, updateApplication } from 'wasp/client/operations'
-import { Link } from 'react-router-dom'
+import { getApplications, updateApplication } from 'wasp/client/operations'
+import { CreateApplicationModal } from './CreateApplicationModal'
 
 export function ApplicationsPage() {
   const { data: applications, isLoading, error } = useQuery(getApplications)
   const [filter, setFilter] = useState('all') // 'all', 'active', 'inactive'
   const [searchTerm, setSearchTerm] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
@@ -19,7 +20,7 @@ export function ApplicationsPage() {
     
     const matchesSearch = 
       app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.description.toLowerCase().includes(searchTerm.toLowerCase())
+      app.description?.toLowerCase().includes(searchTerm.toLowerCase())
 
     return matchesFilter && matchesSearch
   }) || []
@@ -126,7 +127,7 @@ export function ApplicationsPage() {
           />
         </div>
         <button
-          onClick={() => createApplication({})}
+          onClick={() => setIsModalOpen(true)}
           className='bg-primary hover:bg-opacity-90 text-white px-6 py-2 rounded-sm flex items-center gap-2'
         >
           <span className='text-xl'>+</span>
@@ -186,6 +187,8 @@ export function ApplicationsPage() {
           </table>
         </div>
       )}
+
+      <CreateApplicationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 } 
