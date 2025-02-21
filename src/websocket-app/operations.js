@@ -9,6 +9,23 @@ const generateAppCredentials = () => {
   };
 };
 
+export const getConnectedApps = async (args, context) => {
+  if (!context.user) {
+    throw new HttpError(401);
+  }
+  // fetch apps from db and add mock 'connections' attribute;
+  const apps = await context.entities.WebsocketApp.findMany({
+    where: {
+      userId: context.user.id
+    }
+  });
+
+  return apps.map(app => ({
+    ...app,
+    connections: Math.floor(Math.random() * 5) + 1
+  }));
+};
+
 export const createWebsocketApp = async ({ name, description }, context) => {
   if (!context.user) {
     throw new HttpError(401);
@@ -90,62 +107,3 @@ export const updateWebsocketApp = async ({ id, data }, context) => {
     data
   });
 }
-
-// export const deleteTask: DeleteTask<Pick<Task, 'id'>, Task> = async ({ id }, context) => {
-//   if (!context.user) {
-//     throw new HttpError(401);
-//   }
-
-//   const task = await context.entities.Task.delete({
-//     where: {
-//       id,
-//     },
-//   });
-
-//   return task;
-// };
-// //#endregion
-
-// //#region Queries
-// export const getGptResponses: GetGptResponses<void, GptResponse[]> = async (_args, context) => {
-//   if (!context.user) {
-//     throw new HttpError(401);
-//   }
-//   return context.entities.GptResponse.findMany({
-//     where: {
-//       user: {
-//         id: context.user.id,
-//       },
-//     },
-//   });
-// };
-
-// export const getAllTasksByUser: GetAllTasksByUser<void, Task[]> = async (_args, context) => {
-//   if (!context.user) {
-//     throw new HttpError(401);
-//   }
-//   return context.entities.Task.findMany({
-//     where: {
-//       user: {
-//         id: context.user.id,
-//       },
-//     },
-//     orderBy: {
-//       createdAt: 'desc',
-//     },
-//   });
-// };
-
-// export const getAllWebsocketAppsByUser: GetAllWebsocketAppsByUser<void, WebsocketApp[]> = async (_args, context) => {
-//   if (!context.user) {
-//     throw new HttpError(401);
-//   }
-//   return context.entities.WebsocketApp.findMany({
-//     where: {
-//       user: {
-//         id: context.user.id,
-//       },
-//     },
-//   });
-// };
-// //#endregion

@@ -363,15 +363,20 @@ action deleteWebsocketApp {
   entities: [WebsocketApp]
 }
 
+query getConnectedApps {
+  fn: import { getConnectedApps } from "@src/websocket-app/operations",
+  entities: [WebsocketApp]
+}
+
 query getAllWebsocketAppsByUser {
   fn: import { getAllWebsocketAppsByUser } from "@src/websocket-app/operations",
   entities: [WebsocketApp]
 }
 //#endregion
 
-route ApplicationsPage { path: "/applications", to: ApplicationsPage }
+route ApplicationsPageRoute { path: "/applications", to: ApplicationsPage }
 page ApplicationsPage {
-  component: import { ApplicationsPage } from "@src/client/pages/ApplicationsPage.jsx",
+  component: import { ApplicationsPage } from "@src/websocket-app/ApplicationsPage.jsx",
   authRequired: true
 }
 
@@ -388,4 +393,10 @@ action updateApplication {
 action createApplication {
   fn: import { createApplication } from "@src/server/applications/operations.js",
   entities: [WebsocketApp]
+}
+
+
+route DashboardRoute { path: "/dashboard", to: DashboardPage }
+page DashboardPage {
+  component: import { DashboardPage } from "@src/websocket-app/DashboardPage.jsx"
 }

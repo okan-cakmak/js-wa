@@ -5,8 +5,9 @@ import { BlogUrl, DocsUrl } from '../../../shared/common';
 export const appNavigationItems: NavigationItem[] = [
   // { name: 'AI Scheduler (Demo App)', to: routes.DemoAppRoute.to },
   // { name: 'File Upload (AWS S3)', to: routes.FileUploadRoute.to },
-  { name: 'WebSocket App', to: routes.WebsocketAppRoute.to },
-  { name: 'Pricing', to: routes.PricingPageRoute.to },
-  { name: 'Documentation', to: DocsUrl },
-  { name: 'Blog', to: BlogUrl },
+  { name: 'Dashboard', to: routes.DashboardRoute.to },
+  { name: 'Applications', to: routes.ApplicationsPageRoute.to },
+  //{ name: 'Pricing', to: routes.PricingPageRoute.to },
+  //{ name: 'Documentation', to: DocsUrl },
+  //{ name: 'Blog', to: BlogUrl },
 ];
