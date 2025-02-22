@@ -9,20 +9,21 @@ interface CreateApplicationModalProps {
 export function CreateApplicationModal({ isOpen, onClose }: CreateApplicationModalProps) {
   const [formData, setFormData] = useState({
     name: '',
+    description: '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       await createApplication(formData)
-      setFormData({ name: '' })
+      setFormData({ name: '', description: '' })
       onClose()
     } catch (error) {
       console.error('Error creating application:', error)
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -63,6 +64,23 @@ export function CreateApplicationModal({ isOpen, onClose }: CreateApplicationMod
                 required
                 className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white'
                 placeholder='Enter app name'
+              />
+            </div>
+            <div>
+              <label
+                htmlFor='description'
+                className='block text-sm font-medium text-gray-700 dark:text-gray-300'
+              >
+                Description
+              </label>
+              <textarea
+                id='description'
+                name='description'
+                value={formData.description}
+                onChange={handleChange}
+                rows={3}
+                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white'
+                placeholder='Enter app description'
               />
             </div>
             <div className='flex justify-end space-x-3 mt-6'>
