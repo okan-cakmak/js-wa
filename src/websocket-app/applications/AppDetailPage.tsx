@@ -71,6 +71,37 @@ export function AppDetailPage() {
       </div>
 
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
+        {/* App ID */}
+        <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+          <h2 className='text-lg font-semibold text-black dark:text-white mb-2'>App ID</h2>
+          <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm font-mono text-sm break-all'>
+            {app.id}
+          </div>
+        </div>
+
+        {/* Connection Limit */}
+        <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+          <h2 className='text-lg font-semibold text-black dark:text-white mb-2'>Connection Limit</h2>
+          <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+            {app.maxConnections.toLocaleString()} connections
+          </div>
+        </div>
+
+        {/* Status */}
+        <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+          <h2 className='text-lg font-semibold text-black dark:text-white mb-2'>Status</h2>
+          <span
+            className={`px-3 py-1 rounded-full text-sm ${
+              app.enabled
+                ? 'bg-success bg-opacity-10 text-success'
+                : 'bg-danger bg-opacity-10 text-danger'
+            }`}
+          >
+            {app.enabled ? 'Active' : 'Inactive'}
+          </span>
+        </div>
+
+        {/* API Keys */}
         <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
           <h2 className='text-lg font-semibold text-black dark:text-white mb-2'>App Key</h2>
           <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm font-mono text-sm break-all'>
@@ -84,18 +115,91 @@ export function AppDetailPage() {
             {app.secret}
           </div>
         </div>
+      </div>
 
-        <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
-          <h2 className='text-lg font-semibold text-black dark:text-white mb-2'>Status</h2>
-          <span
-            className={`px-3 py-1 rounded-full text-sm ${
-              app.enabled
-                ? 'bg-success bg-opacity-10 text-success'
-                : 'bg-danger bg-opacity-10 text-danger'
-            }`}
-          >
-            {app.enabled ? 'Active' : 'Inactive'}
-          </span>
+      {/* Rate Limits Section */}
+      <div className='mt-8'>
+        <h2 className='text-xl font-semibold text-black dark:text-white mb-4'>Rate Limits & Quotas</h2>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Backend Events</h3>
+            <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+              {app.maxBackendEventsPerSec} per second
+            </div>
+          </div>
+
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Client Events</h3>
+            <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+              {app.maxClientEventsPerSec} per second
+            </div>
+          </div>
+
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Read Requests</h3>
+            <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+              {app.maxReadReqPerSec} per second
+            </div>
+          </div>
+
+          {app.maxEventPayloadInKb && (
+            <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+              <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Max Payload Size</h3>
+              <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+                {app.maxEventPayloadInKb} KB
+              </div>
+            </div>
+          )}
+
+          {app.maxPresenceMembersPerChannel && (
+            <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+              <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Max Presence Members</h3>
+              <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+                {app.maxPresenceMembersPerChannel} per channel
+              </div>
+            </div>
+          )}
+
+          {app.maxEventChannelsAtOnce && (
+            <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+              <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Max Event Channels</h3>
+              <div className='bg-gray-100 dark:bg-boxdark-2 p-3 rounded-sm'>
+                {app.maxEventChannelsAtOnce} at once
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className='mt-8'>
+        <h2 className='text-xl font-semibold text-black dark:text-white mb-4'>Features</h2>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Client Messages</h3>
+            <span
+              className={`px-3 py-1 rounded-full text-sm ${
+                app.enableClientMessages
+                  ? 'bg-success bg-opacity-10 text-success'
+                  : 'bg-danger bg-opacity-10 text-danger'
+              }`}
+            >
+              {app.enableClientMessages ? 'Enabled' : 'Disabled'}
+            </span>
+          </div>
+
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>User Authentication</h3>
+            <span
+              className={`px-3 py-1 rounded-full text-sm ${
+                app.enableUserAuthentication
+                  ? 'bg-success bg-opacity-10 text-success'
+                  : 'bg-danger bg-opacity-10 text-danger'
+              }`}
+            >
+              {app.enableUserAuthentication ? 'Enabled' : 'Disabled'}
+            </span>
+          </div>
         </div>
       </div>
     </div>
