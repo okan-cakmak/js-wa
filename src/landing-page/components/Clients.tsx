@@ -1,7 +1,7 @@
-import AstroLogo from "../logos/AstroLogo";
-import OpenAILogo from "../logos/OpenAILogo";
-import PrismaLogo from "../logos/PrismaLogo";
-import SalesforceLogo from "../logos/SalesforceLogo";
+// import AstroLogo from "../logos/AstroLogo";
+// import OpenAILogo from "../logos/OpenAILogo";
+// import PrismaLogo from "../logos/PrismaLogo";
+// import SalesforceLogo from "../logos/SalesforceLogo";
 
 export default function Clients() {
   return (
