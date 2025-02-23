@@ -9,6 +9,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from 'wasp/client/auth';
 import { useIsLandingPage } from './hooks/useIsLandingPage';
 import { updateCurrentUserLastActiveTimestamp } from 'wasp/client/operations';
+import { GeistProvider, CssBaseline, Themes } from '@geist-ui/core';
 
 /**
  * use this component to wrap all child components
@@ -48,8 +49,21 @@ export default function App() {
     }
   }, [location]);
 
+  const customTheme = Themes.createFromLight({
+    type: 'custom',
+    layout: {
+      radius: '6px',
+      gap: '16pt',
+    },
+    font: {
+      sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+      mono: "'JetBrains Mono', Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace",
+    },
+  });
+
   return (
-    <>
+    <GeistProvider themes={[customTheme]} themeType={customTheme.type}>
+      <CssBaseline />
       <div className='min-h-screen dark:text-white dark:bg-boxdark-2'>
         {isAdminDashboard ? (
           <Outlet />
@@ -63,6 +77,6 @@ export default function App() {
         )}
       </div>
       <CookieConsentBanner />
-    </>
+    </GeistProvider>
   );
 }

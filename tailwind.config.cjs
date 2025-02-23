@@ -8,7 +8,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         satoshi: ['Satoshi', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
       },
       colors: {
         current: 'currentColor',
@@ -20,7 +22,7 @@ module.exports = {
         bodydark: '#AEB7C0',
         bodydark1: '#DEE4EE',
         bodydark2: '#8A99AF',
-        primary: '#3C50E0',
+        primary: 'var(--geist-foreground)',
         secondary: '#80CAEE',
         stroke: '#E2E8F0',
         // gray: '#000',
@@ -43,9 +45,19 @@ module.exports = {
         'meta-7': '#FF6766',
         'meta-8': '#F0950C',
         'meta-9': '#E5E7EB',
-        success: '#219653',
-        danger: '#D34053',
-        warning: '#FFA70B',
+        success: 'var(--geist-success)',
+        danger: 'var(--geist-error)',
+        warning: 'var(--geist-warning)',
+        accent: {
+          1: 'var(--geist-background)',
+          2: 'var(--geist-secondary)',
+          3: 'var(--geist-selection)',
+          4: 'var(--accents-1)',
+          5: 'var(--accents-2)',
+          6: 'var(--accents-3)',
+          7: 'var(--accents-4)',
+          8: 'var(--accents-5)',
+        },
       },
       screens: {
         '2xsm': '375px',

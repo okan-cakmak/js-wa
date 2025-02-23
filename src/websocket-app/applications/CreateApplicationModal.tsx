@@ -6,7 +6,7 @@ interface CreateApplicationModalProps {
   onClose: () => void
 }
 
-export function CreateApplicationModal({ isOpen, onClose }: CreateApplicationModalProps) {
+export function CreateApplicationModal1({ isOpen, onClose }: CreateApplicationModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
