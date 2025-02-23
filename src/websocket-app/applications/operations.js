@@ -31,7 +31,24 @@ export const getApplication = async ({ id }, context) => {
     throw new HttpError(404, 'Application not found')
   }
 
-  return app
+  // Get latest metrics for the app
+  const latestMetric = await context.entities.AppMetrics.findFirst({
+    where: { id: app.id },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  const metrics = latestMetric?.metrics || {};
+
+  return {
+    ...app,
+    soketi_connected: metrics.soketi_connected || 0,
+    soketi_new_connections_total: metrics.soketi_new_connections_total || 0,
+    soketi_new_disconnections_total: metrics.soketi_new_disconnections_total || 0,
+    soketi_socket_received_bytes: metrics.soketi_socket_received_bytes || 0,
+    soketi_socket_transmitted_bytes: metrics.soketi_socket_transmitted_bytes || 0,
+    soketi_ws_messages_received_total: metrics.soketi_ws_messages_received_total || 0,
+    soketi_ws_messages_sent_total: metrics.soketi_ws_messages_sent_total || 0
+  }
 }
 
 export const createApplication = async (args, context) => {

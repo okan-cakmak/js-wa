@@ -202,6 +202,71 @@ export function AppDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Soketi Metrics Section */}
+      <div className='mt-8'>
+        <h2 className='text-xl font-semibold text-black dark:text-white mb-4'>Connection Metrics</h2>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
+          {/* Current Connections */}
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Current Connections</h3>
+            <div className='flex items-center'>
+              <span className={`px-3 py-1 rounded-full text-sm ${
+                app.soketi_connected > 0
+                  ? 'bg-success bg-opacity-10 text-success'
+                  : 'bg-meta-2 bg-opacity-10 text-meta-2'
+              }`}>
+                {app.soketi_connected} active
+              </span>
+            </div>
+          </div>
+
+          {/* Total Connections */}
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Connection History</h3>
+            <div className='space-y-2'>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>New Connections:</span>
+                <span className='font-mono'>{app.soketi_new_connections_total}</span>
+              </div>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>Disconnections:</span>
+                <span className='font-mono'>{app.soketi_new_disconnections_total}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Data Transfer */}
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Data Transfer</h3>
+            <div className='space-y-2'>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>Received:</span>
+                <span className='font-mono'>{app.soketi_socket_received_bytes} bytes</span>
+              </div>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>Transmitted:</span>
+                <span className='font-mono'>{app.soketi_socket_transmitted_bytes} bytes</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className='rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark'>
+            <h3 className='text-md font-semibold text-black dark:text-white mb-2'>Messages</h3>
+            <div className='space-y-2'>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>Received:</span>
+                <span className='font-mono'>{app.soketi_ws_messages_received_total}</span>
+              </div>
+              <div className='flex justify-between items-center'>
+                <span className='text-sm text-gray-600 dark:text-gray-400'>Sent:</span>
+                <span className='font-mono'>{app.soketi_ws_messages_sent_total}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 } 

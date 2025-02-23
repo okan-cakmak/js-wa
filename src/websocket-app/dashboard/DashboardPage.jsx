@@ -9,7 +9,8 @@ export const DashboardPage = () => {
       percentage: 6,
       total: '2.0 GB'
     },
-    totalConnections: 0
+    totalConnections: 0,
+    soketi_connected: 0
   });
 
   const { data: connectedApps, isLoading, error } = useQuery(getConnectedApps);
@@ -20,7 +21,8 @@ export const DashboardPage = () => {
       const total = connectedApps.reduce((sum, app) => sum + app.connections, 0);
       setMetrics(prev => ({
         ...prev,
-        totalConnections: total
+        totalConnections: total,
+        soketi_connected: connectedApps.reduce((sum, app) => sum + (app.soketi_connected || 0), 0)
       }));
     }
   }, [connectedApps]);
@@ -108,8 +110,8 @@ export const DashboardPage = () => {
 
           <div className='mt-4 flex items-end justify-between'>
             <div>
-              <h4 className='text-title-md font-bold text-black dark:text-white'>{metrics.totalConnections}</h4>
-              <span className='text-sm font-medium'>Total Open Connections</span>
+              <h4 className='text-title-md font-bold text-black dark:text-white'>{metrics.soketi_connected}</h4>
+              <span className='text-sm font-medium'>Current Active Connections</span>
             </div>
           </div>
         </div>
@@ -147,7 +149,7 @@ export const DashboardPage = () => {
                     <td className='p-4 text-black dark:text-white'>{app.name}</td>
                     <td className='p-4'>
                       <span className='px-3 py-1 rounded-full text-sm bg-success bg-opacity-10 text-success'>
-                        {app.connections} active
+                        {app.soketi_connected} active
                       </span>
                     </td>
                   </tr>

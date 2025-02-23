@@ -314,7 +314,7 @@ job sendNewsletter {
 
 query getConnectedApps {
   fn: import { getConnectedApps } from "@src/websocket-app/dashboard/operations",
-  entities: [WebsocketApp]
+  entities: [WebsocketApp, AppMetrics]
 }
 
 //#endregion
@@ -333,7 +333,7 @@ page AppDetailPage {
 
 query getApplication {
   fn: import { getApplication } from "@src/websocket-app/applications/operations.js",
-  entities: [WebsocketApp]
+  entities: [WebsocketApp, AppMetrics]
 }
 
 query getApplications {
