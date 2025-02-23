@@ -327,7 +327,7 @@ page ApplicationsPage {
 
 route AppDetailRoute { path: "/applications/:id", to: AppDetailPage }
 page AppDetailPage {
-  component: import { AppDetailPage } from "@src/websocket-app/applications/AppDetailPage.tsx",
+  component: import { AppDetailPage } from "@src/websocket-app/applications/AppDetailPage.jsx",
   authRequired: true
 }
 

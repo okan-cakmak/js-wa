@@ -43,6 +43,10 @@ export function ApplicationsPage() {
     setFilter(value);
   };
 
+  const handleRowClick = (app) => {
+    navigate(`/applications/${app.id}`);
+  };
+
   return (
     <Page>
       <Text h1>Applications</Text>
@@ -110,23 +114,34 @@ export function ApplicationsPage() {
           </Card.Content>
         </Card>
       ) : (
-        <Table data={filteredApps}>
-          <Table.Column prop="name" label="Name" />
-          <Table.Column prop="description" label="Description" />
-          <Table.Column prop="enabled" label="Status">
-            {(value) => (
+        <Table 
+          data={filteredApps}
+          hover
+        >
+          <Table.Column prop="name" label="Name" render={(value, app) => (
+            <div style={{ cursor: 'pointer' }} onClick={() => handleRowClick(app)}>
+              {value}
+            </div>
+          )} />
+          <Table.Column prop="description" label="Description" render={(value, app) => (
+            <div style={{ cursor: 'pointer' }} onClick={() => handleRowClick(app)}>
+              {value}
+            </div>
+          )} />
+          <Table.Column prop="enabled" label="Status" render={(value, app) => (
+            <div style={{ cursor: 'pointer' }} onClick={() => handleRowClick(app)}>
               <Badge type={value ? 'success' : 'error'}>
                 {value ? 'Active' : 'Inactive'}
               </Badge>
-            )}
-          </Table.Column>
-          <Table.Column prop="soketi_connected" label="Connections">
-            {(value) => (
+            </div>
+          )} />
+          <Table.Column prop="soketi_connected" label="Connections" render={(value, app) => (
+            <div style={{ cursor: 'pointer' }} onClick={() => handleRowClick(app)}>
               <Badge type={value > 0 ? 'success' : 'secondary'}>
                 {value || 0} active
               </Badge>
-            )}
-          </Table.Column>
+            </div>
+          )} />
         </Table>
       )}
 
