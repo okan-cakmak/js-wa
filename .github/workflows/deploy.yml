@@ -102,6 +102,10 @@ jobs:
             -e MAILGUN_DOMAIN=${{ secrets.MAILGUN_DOMAIN }} \
             -e STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }} \
             -e LEMONSQUEEZY_API_KEY=${{ secrets.LEMONSQUEEZY_API_KEY }} \
+            -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+            -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
+            -e GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} \
+            -e GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} \
             ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
           
           # Clean up old images
