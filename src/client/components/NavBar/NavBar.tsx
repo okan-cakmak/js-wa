@@ -56,9 +56,9 @@ export default function AppNavBar({ navigationItems }: { navigationItems: Naviga
         </div>
         <div className='hidden lg:flex lg:gap-x-12'>{renderNavigationItems(navigationItems)}</div>
         <div className='hidden lg:flex lg:flex-1 gap-3 justify-end items-center'>
-          <ul className='flex justify-center items-center gap-2 sm:gap-4'>
+          {/* <ul className='flex justify-center items-center gap-2 sm:gap-4'>
             <DarkModeSwitcher />
-          </ul>
+          </ul> */}
           {isUserLoading ? null : !user ? (
             <WaspRouterLink to={routes.LoginRoute.to} className='text-sm font-semibold leading-6 ml-3'>
               <div className='flex items-center duration-300 ease-in-out text-gray-900 hover:text-yellow-500 dark:text-white'>
