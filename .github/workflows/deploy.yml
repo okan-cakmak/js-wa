@@ -106,6 +106,10 @@ jobs:
             -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
             -e GITHUB_CLIENT_ID=${{ secrets.GH_CLIENT_ID }} \
             -e GITHUB_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }} \
+            -e LEMONSQUEEZY_STORE_ID=${{ secrets.LEMONSQUEEZY_STORE_ID }} \
+            -e LEMONSQUEEZY_WEBHOOK_SECRET=${{ secrets.LEMONSQUEEZY_WEBHOOK_SECRET }} \
+            -e PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID=${{ secrets.PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID }} \
+            -e PAYMENTS_PRO_SUBSCRIPTION_PLAN_ID=${{ secrets.PAYMENTS_PRO_SUBSCRIPTION_PLAN_ID }}
             ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
           
           # Clean up old images

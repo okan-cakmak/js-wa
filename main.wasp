@@ -321,14 +321,14 @@ query getConnectedApps {
 
 route ApplicationsPageRoute { path: "/applications", to: ApplicationsPage }
 page ApplicationsPage {
-  component: import { ApplicationsPage } from "@src/websocket-app/applications/ApplicationsPage.jsx",
-  authRequired: true
+  authRequired: true,
+  component: import { ApplicationsPage } from "@src/websocket-app/applications/ApplicationsPage.jsx"
 }
 
 route AppDetailRoute { path: "/applications/:id", to: AppDetailPage }
 page AppDetailPage {
+  authRequired: true,
   component: import { AppDetailPage } from "@src/websocket-app/applications/AppDetailPage.jsx",
-  authRequired: true
 }
 
 query getApplication {
@@ -354,5 +354,6 @@ action createApplication {
 
 route DashboardRoute { path: "/dashboard", to: DashboardPage }
 page DashboardPage {
+  authRequired: true,
   component: import { DashboardPage } from "@src/websocket-app/dashboard/DashboardPage.jsx"
 }
