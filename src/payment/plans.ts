@@ -4,8 +4,8 @@ export type SubscriptionStatus = 'past_due' | 'cancel_at_period_end' | 'active' 
 
 export enum PaymentPlanId {
   Hobby = 'hobby',
-  Pro = 'pro',
-  Credits10 = 'credits10',
+  Startup = 'startup',
+  Scale = 'scale'
 }
 
 export interface PaymentPlan {
@@ -22,21 +22,21 @@ export const paymentPlans: Record<PaymentPlanId, PaymentPlan> = {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
   },
-  [PaymentPlanId.Pro]: {
-    getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_PRO_SUBSCRIPTION_PLAN_ID'),
+  [PaymentPlanId.Startup]: {
+    getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_STARTUP_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
   },
-  [PaymentPlanId.Credits10]: {
-    getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_CREDITS_10_PLAN_ID'),
-    effect: { kind: 'credits', amount: 10 },
+  [PaymentPlanId.Scale]: {
+    getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_SCALE_SUBSCRIPTION_PLAN_ID'),
+    effect: { kind: 'subscription' },
   },
 };
 
 export function prettyPaymentPlanName(planId: PaymentPlanId): string {
   const planToName: Record<PaymentPlanId, string> = {
     [PaymentPlanId.Hobby]: 'Hobby',
-    [PaymentPlanId.Pro]: 'Pro',
-    [PaymentPlanId.Credits10]: '10 Credits',
+    [PaymentPlanId.Startup]: 'Startup',
+    [PaymentPlanId.Scale]: 'Scale',
   };
   return planToName[planId];
 }

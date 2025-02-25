@@ -152,11 +152,6 @@ action updateIsUserAdminById {
 //#endregion
 
 //#region Payment
-route PricingPageRoute { path: "/pricing", to: PricingPage }
-page PricingPage {
-  component: import PricingPage from "@src/payment/PricingPage"
-}
-
 route CheckoutRoute { path: "/checkout", to: CheckoutPage }
 page CheckoutPage {
   authRequired: true,
@@ -301,11 +296,11 @@ query getConnectedApps {
 
 //#endregion
 
-route ApplicationsPageRoute { path: "/applications", to: ApplicationsPage }
-page ApplicationsPage {
-  authRequired: true,
-  component: import { ApplicationsPage } from "@src/websocket-app/applications/ApplicationsPage.jsx"
-}
+// route ApplicationsPageRoute { path: "/applications", to: ApplicationsPage }
+// page ApplicationsPage {
+//   authRequired: true,
+//   component: import { ApplicationsPage } from "@src/websocket-app/applications/ApplicationsPage.jsx"
+// }
 
 route AppDetailRoute { path: "/applications/:id", to: AppDetailPage }
 page AppDetailPage {

@@ -56,6 +56,15 @@ export const createApplication = async (args, context) => {
     throw new HttpError(401)
   }
 
+  // Check if user already has an application
+  const existingApps = await context.entities.WebsocketApp.findMany({
+    where: { userId: context.user.id }
+  })
+
+  if (existingApps.length > 0) {
+    throw new HttpError(403, 'Currently, you can only create one application at a time')
+  }
+
   const app = await context.entities.WebsocketApp.create({
     data: {
       name: args.name || 'New Application',
