@@ -32,46 +32,48 @@ export default function AppNavBar({ navigationItems }: { navigationItems: Naviga
           !isLandingPage,
       })}
     >
-      <nav className='flex items-center justify-between p-6 lg:px-8' aria-label='Global'>
-        <div className='flex items-center lg:flex-1'>
-          <WaspRouterLink
-            to={routes.LandingPageRoute.to}
-            className='flex items-center -m-1.5 p-1.5 text-gray-900 duration-300 ease-in-out hover:text-yellow-500'
-          >
-            <NavLogo />
-            {isLandingPage && (
-              <span className='ml-2 text-sm font-semibold leading-6 dark:text-white'>JetSocket</span>
-            )}
-          </WaspRouterLink>
-        </div>
-        <div className='flex lg:hidden'>
-          <button
-            type='button'
-            className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-white'
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className='sr-only'>Open main menu</span>
-            <HiBars3 className='h-6 w-6' aria-hidden='true' />
-          </button>
-        </div>
-        <div className='hidden lg:flex lg:gap-x-12'>{renderNavigationItems(navigationItems)}</div>
-        <div className='hidden lg:flex lg:flex-1 gap-3 justify-end items-center'>
-          {/* <ul className='flex justify-center items-center gap-2 sm:gap-4'>
+      <div className="mx-auto max-w-7xl">
+        <nav className='flex items-center justify-between px-6 py-6 lg:px-8' aria-label='Global'>
+          <div className='flex items-center lg:flex-1'>
+            <WaspRouterLink
+              to={routes.LandingPageRoute.to}
+              className='flex items-center -m-1.5 p-1.5 text-gray-900 duration-300 ease-in-out hover:text-yellow-500'
+            >
+              <NavLogo />
+              {isLandingPage && (
+                <span className='ml-2 text-sm font-semibold leading-6 dark:text-white'>JetSocket</span>
+              )}
+            </WaspRouterLink>
+          </div>
+          <div className='flex lg:hidden'>
+            <button
+              type='button'
+              className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-white'
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <span className='sr-only'>Open main menu</span>
+              <HiBars3 className='h-6 w-6' aria-hidden='true' />
+            </button>
+          </div>
+          <div className='hidden lg:flex lg:gap-x-12'>{renderNavigationItems(navigationItems)}</div>
+          <div className='hidden lg:flex lg:flex-1 gap-3 justify-end items-center'>
+            {/* <ul className='flex justify-center items-center gap-2 sm:gap-4'>
             <DarkModeSwitcher />
           </ul> */}
-          {isUserLoading ? null : !user ? (
-            <WaspRouterLink to={routes.LoginRoute.to} className='text-sm font-semibold leading-6 ml-3'>
-              <div className='flex items-center duration-300 ease-in-out text-gray-900 hover:text-yellow-500 dark:text-white'>
-                Log in <BiLogIn size='1.1rem' className='ml-1 mt-[0.1rem]' />
+            {isUserLoading ? null : !user ? (
+              <WaspRouterLink to={routes.LoginRoute.to} className='text-sm font-semibold leading-6 ml-3'>
+                <div className='flex items-center duration-300 ease-in-out text-gray-900 hover:text-yellow-500 dark:text-white'>
+                  Log in <BiLogIn size='1.1rem' className='ml-1 mt-[0.1rem]' />
+                </div>
+              </WaspRouterLink>
+            ) : (
+              <div className='ml-3'>
+                <DropdownUser user={user} />
               </div>
-            </WaspRouterLink>
-          ) : (
-            <div className='ml-3'>
-              <DropdownUser user={user} />
-            </div>
-          )}
-        </div>
-      </nav>
+            )}
+          </div>
+        </nav>
+      </div>
       <Dialog as='div' className='lg:hidden' open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className='fixed inset-0 z-50' />
         <Dialog.Panel className='fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:text-white dark:bg-boxdark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>

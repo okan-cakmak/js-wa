@@ -1,7 +1,5 @@
 import { type DailyStats } from 'wasp/entities';
 import { type DailyStatsJob } from 'wasp/server/jobs';
-import Stripe from 'stripe';
-import { stripe } from '../payment/stripe/stripeClient'
 import { listOrders } from '@lemonsqueezy/lemonsqueezy.js';
 import { getDailyPageViews, getSources } from './providers/plausibleAnalyticsUtils';
 // import { getDailyPageViews, getSources } from './providers/googleAnalyticsUtils';
@@ -43,9 +41,6 @@ export const calculateDailyStats: DailyStatsJob<never, void> = async (_args, con
 
     let totalRevenue;
     switch (paymentProcessor.id) {
-      case 'stripe':
-        totalRevenue = await fetchTotalStripeRevenue();
-        break;
       case 'lemonsqueezy':
         totalRevenue = await fetchTotalLemonSqueezyRevenue();
         break;
@@ -129,39 +124,6 @@ export const calculateDailyStats: DailyStatsJob<never, void> = async (_args, con
     });
   }
 };
-
-async function fetchTotalStripeRevenue() {
-  let totalRevenue = 0;
-  let params: Stripe.BalanceTransactionListParams = {
-    limit: 100,
-    // created: {
-    //   gte: startTimestamp,
-    //   lt: endTimestamp
-    // },
-    type: 'charge',
-  };
-
-  let hasMore = true;
-  while (hasMore) {
-    const balanceTransactions = await stripe.balanceTransactions.list(params);
-
-    for (const transaction of balanceTransactions.data) {
-      if (transaction.type === 'charge') {
-        totalRevenue += transaction.amount;
-      }
-    }
-
-    if (balanceTransactions.has_more) {
-      // Set the starting point for the next iteration to the last object fetched
-      params.starting_after = balanceTransactions.data[balanceTransactions.data.length - 1].id;
-    } else {
-      hasMore = false;
-    }
-  }
-
-  // Revenue is in cents so we convert to dollars (or your main currency unit)
-  return totalRevenue / 100;
-}
 
 async function fetchTotalLemonSqueezyRevenue() {
   try {
