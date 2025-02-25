@@ -151,8 +151,6 @@ action updateIsUserAdminById {
 }
 //#endregion
 
-
-
 //#region Payment
 route PricingPageRoute { path: "/pricing", to: PricingPage }
 page PricingPage {
@@ -180,29 +178,6 @@ api paymentsWebhook {
   entities: [User],
   middlewareConfigFn: import { paymentsMiddlewareConfigFn } from "@src/payment/webhook",
   httpRoute: (POST, "/payments-webhook")
-}
-//#endregion
-
-//#region File Upload
-route FileUploadRoute { path: "/file-upload", to: FileUploadPage }
-page FileUploadPage {
-  authRequired: true,
-  component: import FileUpload from "@src/file-upload/FileUploadPage"
-}
-
-action createFile {
-  fn: import { createFile } from "@src/file-upload/operations",
-  entities: [User, File]
-}
-
-query getAllFilesByUser {
-  fn: import { getAllFilesByUser } from "@src/file-upload/operations",
-  entities: [User, File]
-}
-
-query getDownloadFileSignedURL {
-  fn: import { getDownloadFileSignedURL } from "@src/file-upload/operations",
-  entities: [User, File]
 }
 //#endregion
 
@@ -312,6 +287,13 @@ job sendNewsletter {
 
 //#region Dashboard App
 
+route DashboardRoute { path: "/dashboard", to: DashboardPage }
+page DashboardPage {
+  authRequired: true,
+  component: import { DashboardPage } from "@src/websocket-app/dashboard/DashboardPage.jsx"
+}
+
+
 query getConnectedApps {
   fn: import { getConnectedApps } from "@src/websocket-app/dashboard/operations",
   entities: [WebsocketApp, AppMetrics]
@@ -352,8 +334,3 @@ action createApplication {
 }
 
 
-route DashboardRoute { path: "/dashboard", to: DashboardPage }
-page DashboardPage {
-  authRequired: true,
-  component: import { DashboardPage } from "@src/websocket-app/dashboard/DashboardPage.jsx"
-}
