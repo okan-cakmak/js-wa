@@ -99,6 +99,30 @@ export const updateApplication = async (args, context) => {
   })
 }
 
+export const deleteApplication = async ({ id }, context) => {
+  if (!context.user) {
+    throw new HttpError(401)
+  }
+
+  const app = await context.entities.WebsocketApp.findFirst({
+    where: { id, userId: context.user.id }
+  })
+
+  if (!app) {
+    throw new HttpError(404, 'Application not found')
+  }
+
+  // Delete any associated metrics
+  await context.entities.AppMetrics.deleteMany({
+    where: { id }
+  })
+
+  // Delete the application
+  return context.entities.WebsocketApp.delete({
+    where: { id }
+  })
+}
+
 function generateRandomString(length) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''

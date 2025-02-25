@@ -1,0 +1,127 @@
+<div class="flex-grow-1 ph5 ph0-l apps-max-width">
+      
+
+  <h2 class="heading-level-2">App settings</h2>
+  <form class="edit_app" id="edit_app_1948334" action="/apps/1948334" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" autocomplete="off"><input type="hidden" name="_method" value="patch" autocomplete="off"><input type="hidden" name="authenticity_token" value="ex0xxCED1FGX/KgE7dVvib+MdYwTAa/RqVv6lubikqzwHi3U1onhfn6JrCi/pIocR/Iu5joyEq+CFuZxtlTjVA==" autocomplete="off">
+  <div class="ba mw6 mb5 flex items-end pa5 b--smoke-light br2">
+
+      <div class="w-100 mr5 nt2">
+<label for="app_name" class="f7 mb2 db">
+App name
+</label>
+
+<input name="app[name]" id="app_name" type="text" value="sweet-freeze-739-development" required="required" class="bg-transparent sans-serif black f7 input-reset br2 ba b--silver hover-b--slate focus-b--starflower focus-bs-starflower pa3 lh-solid h3 w-100" maxlength="200">
+</div>
+
+      <button type="submit" class="sans-serif f7 lh-title tc nowrap bg-dragonfruit hover-bg-dragonfruit-light focus-bg-dragonfruit-light active-bg-dragonfruit-dark ba bw1 b--dragonfruit focus-b--dragonfruit-light hover-b--dragonfruit-light active-b--dragonfruit-dark pointer ml-auto white pv3 ph4 fw6 br2">
+
+        Update
+
+</button>
+</div>
+  <div class="ba mw6 mb5 pa5 b--smoke-light br2">
+
+    <input name="app[ssl_only]" type="hidden" value="0">
+    <div class="flex items-center justify-between bb b--smoke pb2 nt3 nl5 nr5 ph5 mb5">
+      <label class="f7" for="app_ssl_only">Force TLS</label>
+      <input class="switch-checkbox submit-on-change" type="checkbox" id="app_ssl_only" name="app[ssl_only]" value="1">
+<label for="app_ssl_only" class="f7 mb2 db clip">
+Force TLS
+</label>
+
+
+    </div>
+    <p class="ma0">Only WebSocket connections over TLS will be accepted by our socket server.</p>
+
+</div>
+  <div class="ba mw6 mb5 pa5 b--smoke-light br2">
+
+    <input name="app[client_events]" type="hidden" value="0">
+    <div class="flex items-center justify-between bb b--smoke pb2 nt3 nl5 nr5 ph5 mb5">
+      <label class="f7" for="app_client_events">Enable client events</label>
+      <input class="switch-checkbox submit-on-change" type="checkbox" id="app_client_events" name="app[client_events]" value="1">
+<label for="app_client_events" class="f7 mb2 db clip">
+Enable client events
+</label>
+
+
+    </div>
+    <p class="ma0"><a class="link starflower underline" target="_blank" href="https://pusher.com/docs/channels/using_channels/events#triggering-client-events">Client events</a> are a way to let clients communicate directly with each other.</p>
+
+</div>
+  <div class="ba mw6 mb5 pa5 b--smoke-light br2">
+
+    <input name="app[counting]" type="hidden" value="0">
+    <div class="flex items-center justify-between bb b--smoke pb2 nt3 nl5 nr5 ph5 mb5">
+      <label class="f7" for="app_counting">Enable subscription counting</label>
+      <input class="switch-checkbox submit-on-change" type="checkbox" id="app_counting" name="app[counting]" value="1">
+<label for="app_counting" class="f7 mb2 db clip">
+Enable subscription counting
+</label>
+
+
+    </div>
+
+    <p class="ma0">Allows you to request the <code class="bg-snow dragonfruit-light pa1">subscription_count</code> attribute from the <a class="link starflower underline" target="_blank" href="https://pusher.com/docs/channels/library_auth_reference/rest-api#get-channel-fetch-info-for-one-channel">HTTP API</a>, for a given channel.</p>
+
+      <div class="mt5">
+        <div class="mb3">
+          <input name="app[subscription_count_event]" type="hidden" value="0">
+          <label class="f7" for="subscription_count_event"><strong>Enable subscription count events in channels</strong></label>
+          <div style="float:right;">
+          <input class="switch-checkbox submit-on-change" type="checkbox" id="subscription_count_event" name="app[subscription_count_event]" value="1" disabled="">
+<label for="subscription_count_event" class="f7 mb2 db clip">
+Enable subscription counting Event
+</label>
+
+
+          </div>
+        </div>
+
+        <p class="ma0">Broadcast <code class="bg-snow dragonfruit-light pa1">subscription_count</code> event to channel whenever the number of subscribers on the given channel changes.</p>
+      </div>
+
+
+</div>
+    <div class="ba mw6 mb5 pa5 b--smoke-light br2">
+
+      <input name="app[watchlist_events]" type="hidden" value="0">
+      <div class="flex items-center justify-between bb b--smoke pb2 nt3 nl5 nr5 ph5 mb5">
+        <label class="f7" for="app_watchlist_events">Enable Watchlist Events</label>
+        <input class="switch-checkbox submit-on-change" type="checkbox" id="app_watchlist_events" name="app[watchlist_events]" value="1">
+<label for="app_watchlist_events" class="f7 mb2 db clip">
+Enable Watchlist Events
+</label>
+
+
+      </div>
+      <p class="ma0">Receive events about the online/offline status of authenticated users in a <a class="link starflower underline" target="_blank" href="https://pusher.com/docs/channels/using_channels/watchlist-events?_gl=1*1oj49xx*_gcl_au*MTI5NDcxNTc4MC4xNzM1Mjg3Njk4">Watchlist</a>.</p>
+
+</div>
+  <div class="ba mw6 mb5 pa5 b--smoke-light br2">
+
+    <input name="app[connections_require_authorization]" type="hidden" value="0">
+    <div class="flex items-center justify-between bb b--smoke pb2 nt3 nl5 nr5 ph5 mb5">
+      <label class="f7" for="app_connections_require_authorization">Enable authorized connections</label>
+      <input class="switch-checkbox submit-on-change" type="checkbox" id="app_connections_require_authorization" name="app[connections_require_authorization]" value="1">
+<label for="app_connections_require_authorization" class="f7 mb2 db clip">
+Enable authorized connections
+</label>
+
+
+    </div>
+    <p class="ma0">Closes connections which fail to subscribe to a private/presence channel within a timeout. Before enabling this, ensure each client subscribes to at least one private or presence channel! <a class="link starflower underline" target="_blank" href="https://pusher.com/docs/channels/using_channels/authorized-connections">Check out the docs for more info.</a></p>
+
+</div></form>
+  <div class="ba mw7 b--radish-light pa5 b--smoke-light br2">
+
+    <h2 class="heading-level-2">Danger zone</h2>
+    <p>Deleting your Channels app is a permanent change that can not be undone. If you’d like to, you could <a class="link starflower underline" href="https://dashboard.pusher.com/apps/1948334/collaborators">transfer the app to a collaborator</a> instead.</p>
+
+    <button data-modal-id="delete-channels-app" type="button" class="sans-serif f7 lh-title tc nowrap bg-radish hover-bg-radish-light focus-bg-radish-light active-bg-radish-dark ba bw1 b--radish focus-b--radish-light hover-b--radish-light active-b--radish-dark pointer modal-button-toggle white pv3 ph4 fw6 br2">
+
+      Delete app
+
+</button>
+</div>
+</div>

@@ -328,4 +328,9 @@ action createApplication {
   entities: [WebsocketApp]
 }
 
+action deleteApplication {
+  fn: import { deleteApplication } from "@src/websocket-app/applications/operations.js",
+  entities: [WebsocketApp, AppMetrics]
+}
+
 
