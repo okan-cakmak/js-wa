@@ -325,7 +325,7 @@ action updateApplication {
 
 action createApplication {
   fn: import { createApplication } from "@src/websocket-app/applications/operations.js",
-  entities: [WebsocketApp]
+  entities: [WebsocketApp, User]
 }
 
 action deleteApplication {

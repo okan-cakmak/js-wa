@@ -65,6 +65,7 @@ export const createApplication = async (args, context) => {
     throw new HttpError(403, 'Currently, you can only create one application at a time')
   }
 
+  // Create the application
   const app = await context.entities.WebsocketApp.create({
     data: {
       name: args.name || 'New Application',
@@ -74,6 +75,16 @@ export const createApplication = async (args, context) => {
       secret: generateRandomString(32)
     }
   })
+
+  // If a subscription plan was provided, update the user's subscription plan
+  if (args.subscriptionPlan) {
+    await context.entities.User.update({
+      where: { id: context.user.id },
+      data: { 
+        subscriptionPlan: args.subscriptionPlan
+      }
+    })
+  }
 
   return app
 }
