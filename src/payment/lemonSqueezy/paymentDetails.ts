@@ -28,3 +28,14 @@ export const updateUserLemonSqueezyPaymentDetails = async (
     },
   });
 };
+
+export const updateAppConnectionLimit = async ({ userId, connectionLimit }: { userId: string; connectionLimit: number }, prismaWebsocketAppDelegate: PrismaClient['websocketApp']) => {
+  return prismaWebsocketAppDelegate.updateMany({
+    where: {
+      userId,
+    },
+    data: {
+      maxConnections: connectionLimit,
+    },
+  });
+};

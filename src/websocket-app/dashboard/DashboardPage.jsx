@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'wasp/client/operations';
-import { getConnectedApps, createApplication, updateApplication, deleteApplication } from 'wasp/client/operations';
+import { getConnectedApps, createApplication, updateApplication, deleteApplication, generateCheckoutSession } from 'wasp/client/operations';
+import { PaymentPlanId } from '../../payment/plans';
 import { 
   Page, 
   Grid, 
@@ -22,9 +23,10 @@ import {
   Note,
   Checkbox,
   Divider,
-  Toggle
+  Toggle,
+  Tag
 } from '@geist-ui/core';
-import { Activity, Server, Users, Plus, Key, Terminal, Settings, Code as CodeIcon, Info, FileText } from '@geist-ui/icons';
+import { Activity, Server, Users, Plus, Key, Terminal, Settings, Code as CodeIcon, Info, FileText, ChevronUp, Zap } from '@geist-ui/icons';
 
 export const DashboardPage = () => {
   const [metrics, setMetrics] = useState({
@@ -46,6 +48,7 @@ export const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState('getting-started');
   const { setToast } = useToasts();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   // Update total connections when apps data changes
   useEffect(() => {
@@ -140,6 +143,38 @@ export const DashboardPage = () => {
     }));
   };
 
+  const handleUpgrade = async (plan) => {
+    try {
+      // Map the plan name to PaymentPlanId
+      const planIdMap = {
+        'Startup': PaymentPlanId.Startup,
+        'Scale': PaymentPlanId.Scale
+      };
+      
+      const paymentPlanId = planIdMap[plan];
+      
+      if (!paymentPlanId) {
+        throw new Error(`Invalid plan: ${plan}`);
+      }
+      
+      // Generate checkout session
+      const { sessionUrl } = await generateCheckoutSession(paymentPlanId);
+      
+      // Redirect to checkout page if we have a URL
+      if (sessionUrl) {
+        window.location.href = sessionUrl;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (error) {
+      setToast({
+        text: `Error starting payment flow: ${error.message}`,
+        type: 'error'
+      });
+    }
+    setIsUpgradeModalOpen(false);
+  };
+
   if (error) {
     return (
       <Page>
@@ -184,6 +219,16 @@ export const DashboardPage = () => {
                 <Text h2 style={{ margin: 0 }}>{app.name}</Text>
                 <Text type="secondary">{app.description || 'No description'}</Text>
               </div>
+            </Grid>
+            <Grid>
+              <Button 
+                type="success" 
+                icon={<ChevronUp />} 
+                onClick={() => setIsUpgradeModalOpen(true)}
+                auto
+              >
+                Need more connections? Upgrade Plan
+              </Button>
             </Grid>
           </Grid.Container>
 
@@ -503,6 +548,50 @@ channel.bind('my-event', (data) => {
                       </Grid.Container>
                     </Card.Content>
                   </Card>
+              <Spacer h={2} />
+              <Card width="100%">
+                <Card.Content>
+                  <Zap size={24} />
+                  <Text h4>App Limits</Text>
+                  <Grid.Container gap={2}>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Max Connections" 
+                        content={
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {app.plan === 'Scale' ? 'Unlimited' : (app.maxConnections || 'Loading...')}
+                            {app.plan !== 'Scale' && app.maxConnections && (
+                              <Progress value={(app.soketi_connected || 0) / (app.maxConnections / 100)} type="success" width="120px" />
+                            )}
+                          </div>
+                        } 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Current Usage" 
+                        content={`${app.soketi_connected || 0} / ${app.plan === 'Scale' ? '∞' : (app.maxConnections || 'N/A')}`} 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Data Transfer" 
+                        content={app.plan === 'Scale' ? '1 TB / month' : '100 GB / month'} 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Plan" 
+                        content={
+                          <Badge type={app.plan === 'Scale' ? 'secondary' : 'success'}>
+                            {app.plan || 'Free'}
+                          </Badge>
+                        } 
+                      />
+                    </Grid>
+                  </Grid.Container>
+                </Card.Content>
+              </Card>
             </Tabs.Item>
             
             <Tabs.Item label={<div style={{ display: 'flex', alignItems: 'center' }}><Server size={16} style={{ marginRight: '5px' }} /> Advanced</div>} value="settings">
@@ -566,6 +655,71 @@ channel.bind('my-event', (data) => {
         </Modal.Content>
         <Modal.Action passive onClick={() => setIsDeleteModalOpen(false)}>Cancel</Modal.Action>
         <Modal.Action type="error" onClick={() => handleDeleteApplication(app)}>Delete</Modal.Action>
+      </Modal>
+
+      <Modal visible={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} width="35rem">
+        <Modal.Title>Upgrade Your Plan</Modal.Title>
+        <Modal.Content>
+          <Text p>Choose a plan that fits your needs and scale as you grow.</Text>
+          <Spacer h={1} />
+          
+          <Grid.Container gap={2}>
+            <Grid xs={24} md={12}>
+              <Card shadow width="100%" style={{ height: '100%' }}>
+                <Card.Content>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text h4>Startup</Text>
+                    <Tag type="success">Popular</Tag>
+                  </div>
+                  <Text h3>$49<Text small>/month</Text></Text>
+                  <Spacer h={1} />
+                  <Text p>Perfect for growing applications with moderate traffic.</Text>
+                  <Spacer h={1} />
+                  <div>
+                    <Text p>✓ Up to 10,000 concurrent connections</Text>
+                    <Text p>✓ 100 GB data transfer</Text>
+                    <Text p>✓ Advanced analytics</Text>
+                    <Text p>✓ 24/7 support</Text>
+                    <Text p>✓ Custom domains</Text>
+                  </div>
+                  <Spacer h={1} />
+                  <Button type="success" width="100%" onClick={() => handleUpgrade('Startup')}>Upgrade to Startup</Button>
+                </Card.Content>
+              </Card>
+            </Grid>
+            
+            <Grid xs={24} md={12}>
+              <Card shadow width="100%" style={{ height: '100%' }}>
+                <Card.Content>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text h4>Scale</Text>
+                    <Tag type="secondary">Enterprise</Tag>
+                  </div>
+                  <Text h3>$199<Text small>/month</Text></Text>
+                  <Spacer h={1} />
+                  <Text p>For high-traffic applications with enterprise requirements.</Text>
+                  <Spacer h={1} />
+                  <div>
+                    <Text p>✓ Unlimited concurrent connections</Text>
+                    <Text p>✓ 1 TB data transfer</Text>
+                    <Text p>✓ Advanced analytics & monitoring</Text>
+                    <Text p>✓ Priority 24/7 support</Text>
+                    <Text p>✓ Custom domains</Text>
+                    <Text p>✓ Dedicated infrastructure</Text>
+                  </div>
+                  <Spacer h={1} />
+                  <Button type="secondary" width="100%" onClick={() => handleUpgrade('Scale')}>Upgrade to Scale</Button>
+                </Card.Content>
+              </Card>
+            </Grid>
+          </Grid.Container>
+          
+          <Spacer h={1} />
+          <Note>
+            All plans include a 14-day free trial. You can cancel anytime during the trial period.
+          </Note>
+        </Modal.Content>
+        <Modal.Action passive onClick={() => setIsUpgradeModalOpen(false)}>Cancel</Modal.Action>
       </Modal>
     </Page>
   );

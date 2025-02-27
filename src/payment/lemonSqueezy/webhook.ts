@@ -2,8 +2,8 @@ import { type MiddlewareConfigFn, HttpError } from 'wasp/server';
 import { type PaymentsWebhook } from 'wasp/server/api';
 import { type PrismaClient } from '@prisma/client';
 import express from 'express';
-import { paymentPlans, PaymentPlanId } from '../plans';
-import { updateUserLemonSqueezyPaymentDetails } from './paymentDetails';
+import { paymentPlans, PaymentPlanId, getPlansConnectionLimit } from '../plans';
+import { updateUserLemonSqueezyPaymentDetails, updateAppConnectionLimit } from './paymentDetails';
 import { type Order, type Subscription, getCustomer } from '@lemonsqueezy/lemonsqueezy.js';
 import crypto from 'crypto';
 import { requireNodeEnvVar } from '../../server/utils';
@@ -28,12 +28,13 @@ export const lemonSqueezyWebhook: PaymentsWebhook = async (request, response, co
     const event = JSON.parse(rawBody);
     const userId = event.meta.custom_data.user_id;
     const prismaUserDelegate = context.entities.User;
+    const prismaWebsocketAppDelegate = context.entities.WebsocketApp;
     switch (event.meta.event_name) {
       case 'order_created':
         await handleOrderCreated(event as Order, userId, prismaUserDelegate);
         break;
       case 'subscription_created':
-        await handleSubscriptionCreated(event as Subscription, userId, prismaUserDelegate);
+        await handleSubscriptionCreated(event as Subscription, userId, prismaUserDelegate, prismaWebsocketAppDelegate);
         break;
       case 'subscription_updated':
         await handleSubscriptionUpdated(event as Subscription, userId, prismaUserDelegate);
@@ -94,7 +95,7 @@ async function handleOrderCreated(data: Order, userId: string, prismaUserDelegat
   console.log(`Order ${order_number} created for user ${lemonSqueezyId}`);
 }
 
-async function handleSubscriptionCreated(data: Subscription, userId: string, prismaUserDelegate: PrismaClient['user']) {
+async function handleSubscriptionCreated(data: Subscription, userId: string, prismaUserDelegate: PrismaClient['user'], prismaWebsocketAppDelegate: PrismaClient['websocketApp']) {
   const { customer_id, status, variant_id } = data.data.attributes;
   const lemonSqueezyId = customer_id.toString();
 
@@ -111,6 +112,9 @@ async function handleSubscriptionCreated(data: Subscription, userId: string, pri
       },
       prismaUserDelegate
     );
+
+    await updateAppConnectionLimit({ userId, connectionLimit: getPlansConnectionLimit(planId) }, prismaWebsocketAppDelegate);
+
   } else {
     console.warn(`Unexpected status '${status}' for newly created subscription`);
   }

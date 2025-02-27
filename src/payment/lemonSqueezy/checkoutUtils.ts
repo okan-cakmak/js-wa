@@ -14,6 +14,9 @@ export async function createLemonSqueezyCheckoutSession({ storeId, variantId, us
       custom: {
         user_id: userId // You app's unique user ID is sent on checkout, and it's returned in the webhook so we can easily identify the user.
       }
+    },
+    productOptions: {
+      redirectUrl: `${process.env.WASP_WEB_CLIENT_URL || 'http://localhost:3000'}/checkout`
     }
   });
   if (error) {
@@ -22,6 +25,7 @@ export async function createLemonSqueezyCheckoutSession({ storeId, variantId, us
   if (!session) {
     throw new Error('Checkout not found');
   }
+  console.log('session', session);
   return {
     url: session.data.attributes.url,
     id: session.data.id,
