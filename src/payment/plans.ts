@@ -14,6 +14,8 @@ export interface PaymentPlan {
   getPaymentProcessorPlanId: () => string;
   effect: PaymentPlanEffect;
   connectionLimit: number;
+  dailyMessageLimit: number;
+  price: number;
 }
 
 export type PaymentPlanEffect = { kind: 'subscription' } | { kind: 'credits'; amount: number };
@@ -22,17 +24,23 @@ export const paymentPlans: Record<PaymentPlanId, PaymentPlan> = {
   [PaymentPlanId.Hobby]: {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
+    price: 0,
     connectionLimit: 100,
+    dailyMessageLimit: 100000,
   },
   [PaymentPlanId.Startup]: {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_STARTUP_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
+    price: 34.99,
     connectionLimit: 200,
+    dailyMessageLimit: 500000,
   },
   [PaymentPlanId.Scale]: {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_SCALE_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
+    price: 99.99,
     connectionLimit: 300,
+    dailyMessageLimit: 1000000,
   },
 };
 

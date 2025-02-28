@@ -45,10 +45,15 @@ export const DashboardPage = () => {
     name: '',
     description: '',
   });
-  const [activeTab, setActiveTab] = useState('getting-started');
+  const [activeTab, setActiveTab] = useState('overview');
   const { setToast } = useToasts();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [pusherConnection, setPusherConnection] = useState(null);
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
+
+  const hasApp = connectedApps && connectedApps.length > 0;
+  const app = hasApp ? connectedApps[0] : null;
 
   // Update total connections when apps data changes
   useEffect(() => {
@@ -61,6 +66,57 @@ export const DashboardPage = () => {
       }));
     }
   }, [connectedApps]);
+
+  // Initialize Pusher when Getting Started tab is active and we have app data
+  useEffect(() => {
+    if (activeTab === 'getting-started' && hasApp && app && !pusherConnection) {
+      // Add Pusher script dynamically
+      const script = document.createElement('script');
+      script.src = 'https://js.pusher.com/8.2.0/pusher.min.js';
+      script.async = true;
+      script.onload = () => {
+        // Initialize Pusher
+        console.log("****appKey", app.key);
+        const pusher = new window.Pusher(app.key, {
+          wsHost: 'ws.jetsocket.io',
+          enabledTransports: ['wss',"ws"],
+          cluster: 'eu'
+        });
+
+        pusher.connection.bind('connected', () => {
+          setConnectionStatus('Connected');
+          setToast({
+            text: 'Successfully connected to Pusher',
+            type: 'success'
+          });
+        });
+
+        pusher.connection.bind('disconnected', () => {
+          setConnectionStatus('Disconnected');
+        });
+
+        pusher.connection.bind('error', (err) => {
+          setConnectionStatus('Error');
+          setToast({
+            text: 'Connection error: ' + err.message,
+            type: 'error'
+          });
+        });
+
+        setPusherConnection(pusher);
+      };
+
+      document.head.appendChild(script);
+
+      return () => {
+        if (pusherConnection) {
+          pusherConnection.disconnect();
+          setPusherConnection(null);
+        }
+        document.head.removeChild(script);
+      };
+    }
+  }, [activeTab, app, hasApp]);
 
   // Simulate real-time updates for memory usage
   useEffect(() => {
@@ -183,9 +239,6 @@ export const DashboardPage = () => {
     );
   }
 
-  const hasApp = connectedApps && connectedApps.length > 0;
-  const app = hasApp ? connectedApps[0] : null;
-
   return (
     <Page>
       <Text h1>Dashboard</Text>
@@ -235,12 +288,167 @@ export const DashboardPage = () => {
           <Spacer h={2} />
 
           <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs.Item label={<div style={{ display: 'flex', alignItems: 'center' }}><Activity size={16} style={{ marginRight: '5px' }} /> Overview</div>} value="overview">
+            <Card width="100%">
+                <Card.Content>
+                  <Zap size={24} />
+                  <Text h4>App Limits</Text>
+                  <Grid.Container gap={2}>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Max Connections" 
+                        content={
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {app.plan === 'Scale' ? '300' : app.plan === 'Startup' ? '200' : '100'}
+                            {app.maxConnections && (
+                              <Progress value={(app.soketi_connected || 0) / (app.maxConnections / 100)} type="success" width="120px" />
+                            )}
+                          </div>
+                        } 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Current Usage" 
+                        content={`${app.soketi_connected || 0} / ${app.plan === 'Scale' ? '300' : app.plan === 'Startup' ? '200' : '100'}`} 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Daily Message Limit" 
+                        content={app.plan === 'Scale' ? '1,000,000' : app.plan === 'Startup' ? '500,000' : '100,000'} 
+                      />
+                    </Grid>
+                    <Grid xs={24} md={6}>
+                      <Description 
+                        title="Plan" 
+                        content={
+                          <Badge type={app.plan === 'Scale' ? 'secondary' : 'success'}>
+                            {app.plan || 'Hobby'}
+                          </Badge>
+                        } 
+                      />
+                    </Grid>
+                  </Grid.Container>
+                </Card.Content>
+              </Card>
+              <Spacer h={2} />
+              <Card>
+                <Card.Content>
+                  <Grid.Container gap={2}>
+                    <Grid xs={24} md={12}>
+                      <div>
+                        <Text h4>Connection Statistics</Text>
+                        <Description 
+                          title="Total Connections" 
+                          content={app.soketi_new_connections_total || 0} 
+                        />
+                        <Description 
+                          title="Total Disconnections" 
+                          content={app.soketi_new_disconnections_total || 0} 
+                        />
+                      </div>
+                    </Grid>
+                    <Grid xs={24} md={12}>
+                      <div>
+                        <Text h4>Application Settings</Text>
+                        <Description title="Status" content={
+                          <Badge type={app.enabled ? 'success' : 'error'}>
+                            {app.enabled ? 'Active' : 'Disabled'}
+                          </Badge>
+                        } />
+                        <Description 
+                          title="Created At" 
+                          content={new Date(app.createdAt).toLocaleString()} 
+                        />
+                      </div>
+                    </Grid>
+                  </Grid.Container>
+                  
+                  <Spacer h={2} />
+                </Card.Content>
+              </Card>
+              <Spacer h={2} />
+              <Card width="100%">
+                    <Card.Content>
+                      <Terminal size={24} />
+                      <Text h4>Message Stats</Text>
+                      <Grid.Container gap={2}>
+                        <Grid xs={24} md={6}>
+                          <Description title="Messages Sent" content={app.soketi_ws_messages_sent_total || 0} />
+                        </Grid>
+                        <Grid xs={24} md={6}>
+                          <Description title="Messages Received" content={app.soketi_ws_messages_received_total || 0} />
+                        </Grid>
+                        <Grid xs={24} md={6}>
+                          <Description 
+                            title="Total Data Received" 
+                            content={`${((app.soketi_socket_received_bytes || 0) / 1024).toFixed(2)} KB`}
+                          />
+                        </Grid>
+                        <Grid xs={24} md={6}>
+                          <Description 
+                            title="Total Data Sent" 
+                            content={`${((app.soketi_socket_transmitted_bytes || 0) / 1024).toFixed(2)} KB`}
+                          />
+                        </Grid>
+                      </Grid.Container>
+                    </Card.Content>
+                  </Card>
+              <Spacer h={2} />
+            </Tabs.Item>
+
             <Tabs.Item label={<div style={{ display: 'flex', alignItems: 'center' }}><CodeIcon size={16} style={{ marginRight: '5px' }} /> Getting Started</div>} value="getting-started">
               <Card>
                 <Card.Content>
                   <div>
                     <Text h3>Welcome to JetSocket!</Text>
                     <Text p>Here's how to get started with your WebSocket application.</Text>
+                    
+                    {hasApp && (
+                      <Card shadow style={{ marginBottom: '20px', padding: '15px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Badge 
+                              type={connectionStatus === 'Connected' ? 'success' : connectionStatus === 'Error' ? 'error' : 'warning'}
+                            >
+                              {connectionStatus}
+                            </Badge>
+                            {connectionStatus === 'Connected' && (
+                              <div style={{
+                                width: '8px',
+                                height: '8px',
+                                backgroundColor: '#0070f3',
+                                borderRadius: '50%',
+                                animation: 'pulse 2s infinite',
+                              }} />
+                            )}
+                            <Text b>Live Demo Running!</Text>
+                          </div>
+                          <Text small type="secondary">
+                            This page is actively using JetSocket right now - you're looking at a live WebSocket connection in action!
+                          </Text>
+                        </div>
+                        <style jsx>{`
+                          @keyframes pulse {
+                            0% {
+                              transform: scale(0.95);
+                              box-shadow: 0 0 0 0 rgba(0, 112, 243, 0.7);
+                            }
+                            
+                            70% {
+                              transform: scale(1);
+                              box-shadow: 0 0 0 6px rgba(0, 112, 243, 0);
+                            }
+                            
+                            100% {
+                              transform: scale(0.95);
+                              box-shadow: 0 0 0 0 rgba(0, 112, 243, 0);
+                            }
+                          }
+                        `}</style>
+                      </Card>
+                    )}
                     
                     <Spacer h={1} />
                     <Text h4>1. Install the client library</Text>
@@ -254,9 +462,9 @@ export const DashboardPage = () => {
                     <Text h4>2. Configure your environment</Text>
                     <Card>
                       <div style={{ padding: '10px' }}>
-                        <Code block width="100%">{`JETSOCKET_APP_ID="${app.id}"
-JETSOCKET_APP_KEY="${app.key}"
-JETSOCKET_APP_SECRET="${app.secret}"`}</Code>
+                        <Code block width="100%">{`JETSOCKET_APP_ID="${app?.id || ''}"
+JETSOCKET_APP_KEY="${app?.key || ''}"
+JETSOCKET_APP_SECRET="${app?.secret || ''}"`}</Code>
                       </div>
                     </Card>
                     
@@ -484,115 +692,7 @@ channel.bind('my-event', (data) => {
                 </Card.Content>
               </Card>
             </Tabs.Item>
-            
-            <Tabs.Item label={<div style={{ display: 'flex', alignItems: 'center' }}><Activity size={16} style={{ marginRight: '5px' }} /> Overview</div>} value="overview">
-              <Card>
-                <Card.Content>
-                  <Grid.Container gap={2}>
-                    <Grid xs={24} md={12}>
-                      <div>
-                        <Text h4>Connection Statistics</Text>
-                        <Description 
-                          title="Total Connections" 
-                          content={app.soketi_new_connections_total || 0} 
-                        />
-                        <Description 
-                          title="Total Disconnections" 
-                          content={app.soketi_new_disconnections_total || 0} 
-                        />
-                      </div>
-                    </Grid>
-                    <Grid xs={24} md={12}>
-                      <div>
-                        <Text h4>Application Settings</Text>
-                        <Description title="Status" content={
-                          <Badge type={app.enabled ? 'success' : 'error'}>
-                            {app.enabled ? 'Active' : 'Disabled'}
-                          </Badge>
-                        } />
-                        <Description 
-                          title="Created At" 
-                          content={new Date(app.createdAt).toLocaleString()} 
-                        />
-                      </div>
-                    </Grid>
-                  </Grid.Container>
-                  
-                  <Spacer h={2} />
-                </Card.Content>
-              </Card>
-              <Spacer h={2} />
-              <Card width="100%">
-                    <Card.Content>
-                      <Terminal size={24} />
-                      <Text h4>Message Stats</Text>
-                      <Grid.Container gap={2}>
-                        <Grid xs={24} md={6}>
-                          <Description title="Messages Sent" content={app.soketi_ws_messages_sent_total || 0} />
-                        </Grid>
-                        <Grid xs={24} md={6}>
-                          <Description title="Messages Received" content={app.soketi_ws_messages_received_total || 0} />
-                        </Grid>
-                        <Grid xs={24} md={6}>
-                          <Description 
-                            title="Total Data Received" 
-                            content={`${((app.soketi_socket_received_bytes || 0) / 1024).toFixed(2)} KB`}
-                          />
-                        </Grid>
-                        <Grid xs={24} md={6}>
-                          <Description 
-                            title="Total Data Sent" 
-                            content={`${((app.soketi_socket_transmitted_bytes || 0) / 1024).toFixed(2)} KB`}
-                          />
-                        </Grid>
-                      </Grid.Container>
-                    </Card.Content>
-                  </Card>
-              <Spacer h={2} />
-              <Card width="100%">
-                <Card.Content>
-                  <Zap size={24} />
-                  <Text h4>App Limits</Text>
-                  <Grid.Container gap={2}>
-                    <Grid xs={24} md={6}>
-                      <Description 
-                        title="Max Connections" 
-                        content={
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            {app.plan === 'Scale' ? 'Unlimited' : (app.maxConnections || 'Loading...')}
-                            {app.plan !== 'Scale' && app.maxConnections && (
-                              <Progress value={(app.soketi_connected || 0) / (app.maxConnections / 100)} type="success" width="120px" />
-                            )}
-                          </div>
-                        } 
-                      />
-                    </Grid>
-                    <Grid xs={24} md={6}>
-                      <Description 
-                        title="Current Usage" 
-                        content={`${app.soketi_connected || 0} / ${app.plan === 'Scale' ? '∞' : (app.maxConnections || 'N/A')}`} 
-                      />
-                    </Grid>
-                    <Grid xs={24} md={6}>
-                      <Description 
-                        title="Data Transfer" 
-                        content={app.plan === 'Scale' ? '1 TB / month' : '100 GB / month'} 
-                      />
-                    </Grid>
-                    <Grid xs={24} md={6}>
-                      <Description 
-                        title="Plan" 
-                        content={
-                          <Badge type={app.plan === 'Scale' ? 'secondary' : 'success'}>
-                            {app.plan || 'Free'}
-                          </Badge>
-                        } 
-                      />
-                    </Grid>
-                  </Grid.Container>
-                </Card.Content>
-              </Card>
-            </Tabs.Item>
+          
             
             <Tabs.Item label={<div style={{ display: 'flex', alignItems: 'center' }}><Server size={16} style={{ marginRight: '5px' }} /> Advanced</div>} value="settings">
               <Card>
@@ -671,13 +771,13 @@ channel.bind('my-event', (data) => {
                     <Text h4>Startup</Text>
                     <Tag type="success">Popular</Tag>
                   </div>
-                  <Text h3>$49<Text small>/month</Text></Text>
+                  <Text h3>${34.99}<Text small>/month</Text></Text>
                   <Spacer h={1} />
                   <Text p>Perfect for growing applications with moderate traffic.</Text>
                   <Spacer h={1} />
                   <div>
-                    <Text p>✓ Up to 10,000 concurrent connections</Text>
-                    <Text p>✓ 100 GB data transfer</Text>
+                    <Text p>✓ Up to 200 concurrent connections</Text>
+                    <Text p>✓ 500,000 daily messages</Text>
                     <Text p>✓ Advanced analytics</Text>
                     <Text p>✓ 24/7 support</Text>
                     <Text p>✓ Custom domains</Text>
@@ -695,13 +795,13 @@ channel.bind('my-event', (data) => {
                     <Text h4>Scale</Text>
                     <Tag type="secondary">Enterprise</Tag>
                   </div>
-                  <Text h3>$199<Text small>/month</Text></Text>
+                  <Text h3>${99.99}<Text small>/month</Text></Text>
                   <Spacer h={1} />
                   <Text p>For high-traffic applications with enterprise requirements.</Text>
                   <Spacer h={1} />
                   <div>
-                    <Text p>✓ Unlimited concurrent connections</Text>
-                    <Text p>✓ 1 TB data transfer</Text>
+                    <Text p>✓ Up to 300 concurrent connections</Text>
+                    <Text p>✓ 1,000,000 daily messages</Text>
                     <Text p>✓ Advanced analytics & monitoring</Text>
                     <Text p>✓ Priority 24/7 support</Text>
                     <Text p>✓ Custom domains</Text>
