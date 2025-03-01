@@ -70,32 +70,32 @@ export const DashboardPage = () => {
   // Initialize Pusher when Getting Started tab is active and we have app data
   useEffect(() => {
     if (activeTab === 'getting-started' && hasApp && app && !pusherConnection) {
-      // Add Pusher script dynamically
+      // Add JetSocket script dynamically
       const script = document.createElement('script');
-      script.src = 'https://js.pusher.com/8.2.0/pusher.min.js';
+      script.src = '/jetsocket.min.js';
       script.async = true;
       script.onload = () => {
-        // Initialize Pusher
-        console.log("****appKey", app.key);
-        const pusher = new window.Pusher(app.key, {
+        // Initialize JetSocket
+        const jetSocket = new window.JetSocket({
+          appKey: app.key,
           wsHost: 'ws.jetsocket.io',
-          enabledTransports: ['wss',"ws"],
+          encrypted: true,
           cluster: 'eu'
         });
 
-        pusher.connection.bind('connected', () => {
+        jetSocket.on('connection', () => {
           setConnectionStatus('Connected');
           setToast({
-            text: 'Successfully connected to Pusher',
+            text: 'Successfully connected to JetSocket',
             type: 'success'
           });
         });
 
-        pusher.connection.bind('disconnected', () => {
+        jetSocket.on('disconnected', () => {
           setConnectionStatus('Disconnected');
         });
 
-        pusher.connection.bind('error', (err) => {
+        jetSocket.on('error', (err) => {
           setConnectionStatus('Error');
           setToast({
             text: 'Connection error: ' + err.message,
@@ -103,7 +103,7 @@ export const DashboardPage = () => {
           });
         });
 
-        setPusherConnection(pusher);
+        setPusherConnection(jetSocket);
       };
 
       document.head.appendChild(script);
