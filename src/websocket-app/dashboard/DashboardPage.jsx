@@ -231,6 +231,24 @@ export const DashboardPage = () => {
     setIsUpgradeModalOpen(false);
   };
 
+  const handleToggleUserAuth = async (app) => {
+    try {
+      await updateApplication({
+        id: app.id,
+        enableUserAuthentication: !app.enableUserAuthentication
+      });
+      setToast({
+        text: `User authentication ${!app.enableUserAuthentication ? 'enabled' : 'disabled'} successfully`,
+        type: 'success'
+      });
+    } catch (error) {
+      setToast({
+        text: 'Failed to update user authentication setting',
+        type: 'error'
+      });
+    }
+  };
+
   if (error) {
     return (
       <Page>
@@ -650,6 +668,18 @@ channel.bind('my-event', (data) => {
                               <Text small type="secondary">Allow clients to communicate directly with each other</Text>
                             </div>
                             <Toggle />
+                          </div>
+                        </Grid>
+                        <Grid xs={24}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                            <div>
+                              <Text>User Authentication</Text>
+                              <Text small type="secondary">Require users to authenticate before connecting</Text>
+                            </div>
+                            <Toggle 
+                              checked={app.enableUserAuthentication}
+                              onChange={() => handleToggleUserAuth(app)}
+                            />
                           </div>
                         </Grid>
                         <Grid xs={24}>

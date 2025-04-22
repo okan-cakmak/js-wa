@@ -105,7 +105,8 @@ export const updateApplication = async (args, context) => {
   return context.entities.WebsocketApp.update({
     where: { id: args.id },
     data: {
-      enabled: args.enabled !== undefined ? args.enabled : app.enabled
+      enabled: args.enabled !== undefined ? args.enabled : app.enabled,
+      enableUserAuthentication: args.enableUserAuthentication !== undefined ? args.enableUserAuthentication : app.enableUserAuthentication
     }
   })
 }
