@@ -27,6 +27,7 @@ import {
   Tag
 } from '@geist-ui/core';
 import { Activity, Server, Users, Plus, Key, Terminal, Settings, Code as CodeIcon, Info, FileText, ChevronUp, Zap } from '@geist-ui/icons';
+import CryptoJS from 'crypto-js';
 
 export const DashboardPage = () => {
   const [metrics, setMetrics] = useState({
@@ -51,9 +52,26 @@ export const DashboardPage = () => {
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [pusherConnection, setPusherConnection] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
+  const [receivedMessages, setReceivedMessages] = useState([]);
+  const [demoSignature, setDemoSignature] = useState(null);
+  const [demoTimestamp, setDemoTimestamp] = useState(null);
 
   const hasApp = connectedApps && connectedApps.length > 0;
   const app = hasApp ? connectedApps[0] : null;
+
+  // Calculate demo signature
+  useEffect(() => {
+    if (app?.key && app?.secret) {
+      const timestamp = Math.floor(Date.now() / 1000);
+      const body = '{"data":"{\\"message\\":\\"hello world\\"}","name":"my-event","channel":"my-channel"}';
+      const bodyMd5 = CryptoJS.MD5(body).toString();
+      const stringToSign = `POST\n/apps/${app.id}/events\nauth_key=${app.key}&auth_timestamp=${timestamp}&auth_version=1.0&body_md5=${bodyMd5}`;
+      const signature = CryptoJS.HmacSHA256(stringToSign, app.secret).toString();
+      
+      setDemoSignature(signature);
+      setDemoTimestamp(timestamp);
+    }
+  }, [app]);
 
   // Update total connections when apps data changes
   useEffect(() => {
@@ -101,6 +119,27 @@ export const DashboardPage = () => {
             text: 'Connection error: ' + err.message,
             type: 'error'
           });
+        });
+
+        // Subscribe to the demo channel
+        const channel = jetSocket.subscribe('my-channel');
+        channel.bind('my-event', (data) => {
+          console.log('Received data:', data);
+          try {
+            const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+            const message = parsedData.data?.message || parsedData.message || 'No message found';
+            setReceivedMessages(prev => [...prev, message]);
+            setToast({
+              text: 'Received message: ' + message,
+              type: 'success'
+            });
+          } catch (error) {
+            console.error('Error parsing message:', error);
+            setToast({
+              text: 'Error parsing message',
+              type: 'error'
+            });
+          }
         });
 
         setPusherConnection(jetSocket);
@@ -480,8 +519,7 @@ export const DashboardPage = () => {
                     <Text h4>2. Configure your environment</Text>
                     <Card>
                       <div style={{ padding: '10px' }}>
-                        <Code block width="100%">{`JETSOCKET_APP_ID="${app?.id || ''}"
-JETSOCKET_APP_KEY="${app?.key || ''}"
+                        <Code block width="100%">{`JETSOCKET_APP_KEY="${app?.key || ''}"
 JETSOCKET_APP_SECRET="${app?.secret || ''}"`}</Code>
                       </div>
                     </Card>
@@ -490,12 +528,11 @@ JETSOCKET_APP_SECRET="${app?.secret || ''}"`}</Code>
                     <Text h4>3. Initialize the client</Text>
                     <Card>
                       <div style={{ padding: '10px' }}>
-                        <Code block width="100%">{`import JetSocket from 'jetsocket-js';
+                        <Code block width="100%">{`import JetSocket from 'jetsocket';
 
-const jetSocket = new JetSocket({
-  appId: process.env.JETSOCKET_APP_ID,
-  key: process.env.JETSOCKET_APP_KEY,
-  secret: process.env.JETSOCKET_APP_SECRET,
+const jetSocket = new JetSocket('YOUR_APP_KEY', {
+  cluster: 'eu',
+  encrypted: true
 });`}</Code>
                       </div>
                     </Card>
@@ -519,6 +556,39 @@ channel.bind('my-event', (data) => {
                         <Code block width="100%">{`jetSocket.trigger('my-channel', 'my-event', {
   message: 'Hello World!'
 });`}</Code>
+                      </div>
+                    </Card>
+                    
+                    <Spacer h={1} />
+                    <Text h4>6. Try it out!</Text>
+                    <Card>
+                      <div style={{ padding: '10px' }}>
+                        <Text p>Run this curl command in your terminal to send a test message:</Text>
+                        <Code block width="100%">{`curl -H 'Content-Type: application/json' \\
+-d '{"data":"{\\"message\\":\\"hello world\\"}","name":"my-event","channel":"my-channel"}' \\
+"https://ws-eu.jetsocket.io/apps/${app?.id}/events?auth_key=${app?.key}&auth_timestamp=${demoTimestamp}&auth_version=1.0&auth_signature=${demoSignature}"`}</Code>
+                        <Spacer h={1} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Badge type={connectionStatus === 'Connected' ? 'success' : 'warning'}>
+                            {connectionStatus}
+                          </Badge>
+                          <Text small type="secondary">
+                            {connectionStatus === 'Connected' ? 'Ready to receive messages!' : 'Waiting for connection...'}
+                          </Text>
+                        </div>
+                        <Spacer h={1} />
+                        {receivedMessages.length > 0 && (
+                          <>
+                            <Text h5>Received Messages:</Text>
+                            <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #eaeaea', borderRadius: '4px', padding: '10px' }}>
+                              {receivedMessages.map((message, index) => (
+                                <div key={index} style={{ marginBottom: '8px' }}>
+                                  <Text>{message}</Text>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </Card>
                     

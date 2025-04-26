@@ -11,86 +11,36 @@ import {
   ChevronDownIcon
 } from '@heroicons/react/24/outline';
 
-type PublishLanguage = 'nodejs' | 'python' | 'go';
-type SubscribeLanguage = 'javascript' | 'react' | 'vue';
+type PublishLanguage = 'nodejs';
+type SubscribeLanguage = 'javascript' | 'android' | 'ios';
 
 const LandingPage = () => {
   const [publishTab, setPublishTab] = useState<PublishLanguage>('nodejs');
   const [subscribeTab, setSubscribeTab] = useState<SubscribeLanguage>('javascript');
 
   const publishExamples: Record<PublishLanguage, string> = {
-    nodejs: `const jetsocket = new JetSocket({
-  instanceId: 'YOUR_INSTANCE_ID',
-  secretKey: 'YOUR_SECRET_KEY'
+    nodejs: `const jetsocket = new JetSocket('YOUR_APP_KEY', {
+  cluster: 'eu',
+  encrypted: true
 });
 
 jetsocket.trigger('my-channel', 'my-event', {
   message: 'Hello from JetSocket!'
-});`,
-    python: `jetsocket = JetSocket(
-  instance_id='YOUR_INSTANCE_ID',
-  secret_key='YOUR_SECRET_KEY'
-)
-
-jetsocket.trigger('my-channel', 'my-event', {
-  'message': 'Hello from JetSocket!'
-})`,
-    go: `jetsocket := NewJetSocket(
-  "YOUR_INSTANCE_ID",
-  "YOUR_SECRET_KEY",
-)
-
-jetsocket.Trigger("my-channel", "my-event", map[string]interface{}{
-  "message": "Hello from JetSocket!",
-})`
+});`
   };
 
   const subscribeExamples: Record<SubscribeLanguage, string> = {
-    javascript: `const jetsocket = new JetSocket({
-  instanceId: 'YOUR_INSTANCE_ID'
+    javascript: `const jetsocket = new JetSocket('YOUR_APP_KEY', {
+  cluster: 'eu',
+  encrypted: true
 });
 
 const channel = jetsocket.subscribe('my-channel');
 channel.bind('my-event', (data) => {
   console.log('Received:', data.message);
 });`,
-    react: `import { useEffect } from 'react';
-
-function App() {
-  useEffect(() => {
-    const jetsocket = new JetSocket({
-      instanceId: 'YOUR_INSTANCE_ID'
-    });
-
-    const channel = jetsocket.subscribe('my-channel');
-    channel.bind('my-event', (data) => {
-      console.log('Received:', data.message);
-    });
-
-    return () => {
-      channel.unbind();
-      jetsocket.unsubscribe('my-channel');
-    };
-  }, []);
-}`,
-    vue: `<script setup>
-import { onMounted, onUnmounted } from 'vue';
-
-const jetsocket = new JetSocket({
-  instanceId: 'YOUR_INSTANCE_ID'
-});
-
-onMounted(() => {
-  const channel = jetsocket.subscribe('my-channel');
-  channel.bind('my-event', (data) => {
-    console.log('Received:', data.message);
-  });
-});
-
-onUnmounted(() => {
-  jetsocket.unsubscribe('my-channel');
-});
-</script>`
+    android: `// Coming soon`,
+    ios: `// Coming soon`
   };
 
   return (
@@ -134,23 +84,19 @@ onUnmounted(() => {
                     <h3 className='text-lg font-semibold mb-4 text-white'>Publish</h3>
                     <div className='bg-[#0d1117] rounded-lg overflow-hidden'>
                       <div className='flex border-b border-gray-800'>
-                        {Object.entries({
-                          nodejs: 'Node.js',
-                          python: 'Python',
-                          go: 'Go',
-                        } as const).map(([key, label]) => (
-                          <button
-                            key={key}
-                            onClick={() => setPublishTab(key as PublishLanguage)}
-                            className={`px-4 py-2 text-sm font-medium ${
-                              publishTab === key
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800'
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
+                        <button
+                          className='px-4 py-2 text-sm font-medium bg-indigo-600 text-white'
+                        >
+                          Node.js
+                        </button>
+                        <div className='px-4 py-2 text-sm font-medium text-gray-400 flex items-center'>
+                          <span className='mr-1'>Python</span>
+                          <span className='text-xs text-gray-500'>• Coming soon</span>
+                        </div>
+                        <div className='px-4 py-2 text-sm font-medium text-gray-400 flex items-center'>
+                          <span className='mr-1'>Go</span>
+                          <span className='text-xs text-gray-500'>• Coming soon</span>
+                        </div>
                       </div>
                       <pre className='p-4 text-sm overflow-x-auto'>
                         <code className='text-[#e6edf3] font-mono'>{publishExamples[publishTab]}</code>
@@ -163,23 +109,19 @@ onUnmounted(() => {
                     <h3 className='text-lg font-semibold mb-4 text-white'>Subscribe</h3>
                     <div className='bg-[#0d1117] rounded-lg overflow-hidden'>
                       <div className='flex border-b border-gray-800'>
-                        {Object.entries({
-                          javascript: 'JavaScript',
-                          react: 'React',
-                          vue: 'Vue',
-                        } as const).map(([key, label]) => (
-                          <button
-                            key={key}
-                            onClick={() => setSubscribeTab(key as SubscribeLanguage)}
-                            className={`px-4 py-2 text-sm font-medium ${
-                              subscribeTab === key
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800'
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
+                        <button
+                          className='px-4 py-2 text-sm font-medium bg-indigo-600 text-white'
+                        >
+                          JavaScript
+                        </button>
+                        <div className='px-4 py-2 text-sm font-medium text-gray-400 flex items-center'>
+                          <span className='mr-1'>Android</span>
+                          <span className='text-xs text-gray-500'>• Coming soon</span>
+                        </div>
+                        <div className='px-4 py-2 text-sm font-medium text-gray-400 flex items-center'>
+                          <span className='mr-1'>iOS</span>
+                          <span className='text-xs text-gray-500'>• Coming soon</span>
+                        </div>
                       </div>
                       <pre className='p-4 text-sm overflow-x-auto'>
                         <code className='text-[#e6edf3] font-mono'>{subscribeExamples[subscribeTab]}</code>
