@@ -26,21 +26,21 @@ export const paymentPlans: Record<PaymentPlanId, PaymentPlan> = {
     effect: { kind: 'subscription' },
     price: 0,
     connectionLimit: 100,
-    dailyMessageLimit: 100000,
+    dailyMessageLimit: 200000,
   },
   [PaymentPlanId.Startup]: {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_STARTUP_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
-    price: 34.99,
-    connectionLimit: 200,
-    dailyMessageLimit: 500000,
+    price: 39.99,
+    connectionLimit: 1000,
+    dailyMessageLimit: 1000000,
   },
   [PaymentPlanId.Scale]: {
     getPaymentProcessorPlanId: () => requireNodeEnvVar('PAYMENTS_SCALE_SUBSCRIPTION_PLAN_ID'),
     effect: { kind: 'subscription' },
     price: 99.99,
-    connectionLimit: 300,
-    dailyMessageLimit: 1000000,
+    connectionLimit: 3000,
+    dailyMessageLimit: 6000000,
   },
 };
 
