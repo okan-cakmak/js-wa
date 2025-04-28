@@ -3,30 +3,42 @@ app OpenSaaS {
     version: "^0.16.0"
   },
 
-  title: "JetSocket",
+  title: "JetSocket - Real-time WebSocket Applications Made Simple",
 
   head: [
     "<meta charset='utf-8' />",
-    "<meta name='description' content='Your apps main description and features.' />",
-    "<meta name='author' content='Your (App) Name' />",
-    "<meta name='keywords' content='saas, solution, product, app, service' />",
+    "<meta name='viewport' content='width=device-width, initial-scale=1.0' />",
+    "<meta name='description' content='Build and manage real-time WebSocket applications with ease. JetSocket provides powerful tools for creating scalable, real-time web applications.' />",
+    "<meta name='author' content='JetSocket' />",
+    "<meta name='keywords' content='websocket, real-time, web applications, saas, development tools, api, socket.io, real-time communication, pusher, ably, pubsub, real-time messaging, websocket alternative, real-time data, websocket api, real-time api' />",
     
+    // Open Graph / Facebook
     "<meta property='og:type' content='website' />",
-    "<meta property='og:title' content='Your Open SaaS App' />",
-    "<meta property='og:site_name' content='Your Open SaaS App' />",
-    "<meta property='og:url' content='https://your-saas-app.com' />",
-    "<meta property='og:description' content='Your apps main description and features.' />",
-    "<meta property='og:image' content='https://your-saas-app.com/public-banner.webp' />",
-    "<meta name='twitter:image' content='https://your-saas-app.com/public-banner.webp' />",
-    "<meta name='twitter:image:width' content='800' />",
-    "<meta name='twitter:image:height' content='400' />",
+    "<meta property='og:title' content='JetSocket - Real-time WebSocket Applications Made Simple' />",
+    "<meta property='og:site_name' content='JetSocket' />",
+    "<meta property='og:url' content='https://jetsocket.com' />",
+    "<meta property='og:description' content='Build and manage real-time WebSocket applications with ease. JetSocket provides powerful tools for creating scalable, real-time web applications.' />",
+    "<meta property='og:image' content='https://jetsocket.com/public-banner.webp' />",
+    "<meta property='og:image:width' content='1200' />",
+    "<meta property='og:image:height' content='630' />",
+    
+    // Twitter
     "<meta name='twitter:card' content='summary_large_image' />",
-    // TODO: You can put your Plausible analytics scripts below (https://docs.opensaas.sh/guides/analytics/):
-    // NOTE: Plausible does not use Cookies, so you can simply add the scripts here.
-    // Google, on the other hand, does, so you must instead add the script dynamically
-    // via the Cookie Consent component after the user clicks the "Accept" cookies button.
-    "<script defer data-domain='<your-site-id>' src='https://plausible.io/js/script.js'></script>",  // for production
-    "<script defer data-domain='<your-site-id>' src='https://plausible.io/js/script.local.js'></script>",  // for development
+    "<meta name='twitter:title' content='JetSocket - Real-time WebSocket Applications Made Simple' />",
+    "<meta name='twitter:description' content='Build and manage real-time WebSocket applications with ease. JetSocket provides powerful tools for creating scalable, real-time web applications.' />",
+    "<meta name='twitter:image' content='https://jetsocket.com/public-banner.webp' />",
+    "<meta name='twitter:image:width' content='1200' />",
+    "<meta name='twitter:image:height' content='630' />",
+    
+    // Additional SEO meta tags
+    "<meta name='robots' content='index, follow' />",
+    "<meta name='language' content='English' />",
+    "<meta name='revisit-after' content='7 days' />",
+    "<meta name='generator' content='JetSocket' />",
+    
+    // Plausible Analytics
+    "<script defer data-domain='jetsocket.com' src='https://plausible.io/js/script.js'></script>",  // for production
+    "<script defer data-domain='jetsocket.com' src='https://plausible.io/js/script.local.js'></script>",  // for development
   ],
 
   // 🔐 Auth out of the box! https://wasp.sh/docs/auth/overview
