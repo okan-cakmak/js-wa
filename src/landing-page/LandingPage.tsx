@@ -44,9 +44,9 @@ channel.bind('my-event', (data) => {
   };
 
   return (
-    <div className='min-h-screen bg-white'>
+    <main className='min-h-screen bg-white'>
       {/* Hero Section */}
-      <div className='relative isolate overflow-hidden bg-gradient-to-b from-indigo-100/20'>
+      <section className='relative isolate overflow-hidden bg-gradient-to-b from-indigo-100/20' aria-labelledby="hero-heading">
         <div className='mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40'>
           <div className='mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8'>
             <div className='mt-24 sm:mt-32 lg:mt-16'>
@@ -56,33 +56,34 @@ channel.bind('my-event', (data) => {
                 </span>
               </a>
             </div>
-            <h1 className='mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
+            <h1 id="hero-heading" className='mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
               The Cost-Effective Pusher Alternative You've Been Waiting For
             </h1>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
-              Drop-in  cement for Pusher. Same API, better pricing. Switch in minutes with zero code changes.
+              Drop-in replacement for Pusher. Same API, better pricing. Switch in minutes with zero code changes.
             </p>
             <div className='mt-10 flex items-center gap-x-6'>
-            <Link
-  to="/signup"
-  className="
-    mt-6            /* gap from the content above */
-    mb-4            /* gap from the bottom of the card */
-    block
-    w-full          /* fill the card’s inner width */
-    rounded-full      /* smooth corners */
-    bg-[#6366F1]     /* blue background */
-    py-3            /* vertical padding */
-    text-center
-    font-semibold
-    text-white
-    hover:bg-blue-700
-    focus:outline-none focus:ring-2 focus:ring-blue-500
-    transition
-  "
->
-  Get started
-</Link>
+              <Link
+                to="/signup"
+                className="
+                  mt-6
+                  mb-4
+                  block
+                  w-full
+                  rounded-full
+                  bg-[#6366F1]
+                  py-3
+                  text-center
+                  font-semibold
+                  text-white
+                  hover:bg-blue-700
+                  focus:outline-none focus:ring-2 focus:ring-blue-500
+                  transition
+                "
+                aria-label="Get started with JetSocket"
+              >
+                Get started
+              </Link>
               <a href='#how-it-works' className='text-sm font-semibold leading-6 text-gray-900'>
                 Learn more <span aria-hidden='true'>→</span>
               </a>
@@ -97,9 +98,12 @@ channel.bind('my-event', (data) => {
                   <div>
                     <h3 className='text-lg font-semibold mb-4 text-white'>Publish</h3>
                     <div className='bg-[#0d1117] rounded-lg overflow-hidden'>
-                      <div className='flex border-b border-gray-800'>
+                      <div className='flex border-b border-gray-800' role="tablist">
                         <button
                           className='px-4 py-2 text-sm font-medium bg-indigo-600 text-white'
+                          role="tab"
+                          aria-selected="true"
+                          aria-controls="nodejs-code"
                         >
                           Node.js
                         </button>
@@ -112,7 +116,7 @@ channel.bind('my-event', (data) => {
                           <span className='text-xs text-gray-500'>• Coming soon</span>
                         </div>
                       </div>
-                      <pre className='p-4 text-sm overflow-x-auto'>
+                      <pre className='p-4 text-sm overflow-x-auto' id="nodejs-code" role="tabpanel">
                         <code className='text-[#e6edf3] font-mono'>{publishExamples[publishTab]}</code>
                       </pre>
                     </div>
@@ -122,9 +126,12 @@ channel.bind('my-event', (data) => {
                   <div>
                     <h3 className='text-lg font-semibold mb-4 text-white'>Subscribe</h3>
                     <div className='bg-[#0d1117] rounded-lg overflow-hidden'>
-                      <div className='flex border-b border-gray-800'>
+                      <div className='flex border-b border-gray-800' role="tablist">
                         <button
                           className='px-4 py-2 text-sm font-medium bg-indigo-600 text-white'
+                          role="tab"
+                          aria-selected="true"
+                          aria-controls="javascript-code"
                         >
                           JavaScript
                         </button>
@@ -137,7 +144,7 @@ channel.bind('my-event', (data) => {
                           <span className='text-xs text-gray-500'>• Coming soon</span>
                         </div>
                       </div>
-                      <pre className='p-4 text-sm overflow-x-auto'>
+                      <pre className='p-4 text-sm overflow-x-auto' id="javascript-code" role="tabpanel">
                         <code className='text-[#e6edf3] font-mono'>{subscribeExamples[subscribeTab]}</code>
                       </pre>
                     </div>
@@ -147,13 +154,13 @@ channel.bind('my-event', (data) => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Features Section */}
-      <div className='bg-white py-24 sm:py-32'>
+      <section className='bg-white py-24 sm:py-32' aria-labelledby="features-heading">
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 className='text-base font-semibold leading-7 text-indigo-600'>Powerful Features</h2>
+            <h2 id="features-heading" className='text-base font-semibold leading-7 text-indigo-600'>Powerful Features</h2>
             <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
               Everything you need for real-time applications
             </p>
@@ -165,7 +172,7 @@ channel.bind('my-event', (data) => {
             <dl className='grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3'>
               <div className='flex flex-col'>
                 <dt className='flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900'>
-                  <BoltIcon className='h-5 w-5 flex-none text-indigo-600' />
+                  <BoltIcon className='h-5 w-5 flex-none text-indigo-600' aria-hidden="true" />
                   Lightning-Fast Real-Time
                 </dt>
                 <dd className='mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600'>
@@ -176,7 +183,7 @@ channel.bind('my-event', (data) => {
               </div>
               <div className='flex flex-col'>
                 <dt className='flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900'>
-                  <ArrowPathIcon className='h-5 w-5 flex-none text-indigo-600' />
+                  <ArrowPathIcon className='h-5 w-5 flex-none text-indigo-600' aria-hidden="true" />
                   Drop-in Replacement
                 </dt>
                 <dd className='mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600'>
@@ -187,7 +194,7 @@ channel.bind('my-event', (data) => {
               </div>
               <div className='flex flex-col'>
                 <dt className='flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900'>
-                  <CurrencyDollarIcon className='h-5 w-5 flex-none text-indigo-600' />
+                  <CurrencyDollarIcon className='h-5 w-5 flex-none text-indigo-600' aria-hidden="true" />
                   70% Cost Savings
                 </dt>
                 <dd className='mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600'>
@@ -199,13 +206,13 @@ channel.bind('my-event', (data) => {
             </dl>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* How It Works Section */}
-      <div id='how-it-works' className='bg-gray-50 py-24 sm:py-32'>
+      <section id='how-it-works' className='bg-gray-50 py-24 sm:py-32' aria-labelledby="how-it-works-heading">
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 className='text-base font-semibold leading-7 text-indigo-600'>Simple Integration</h2>
+            <h2 id="how-it-works-heading" className='text-base font-semibold leading-7 text-indigo-600'>Simple Integration</h2>
             <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
               Switch to JetSocket in 3 Steps
             </p>
@@ -248,7 +255,7 @@ channel.bind('my-event', (data) => {
             </dl>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Testimonials Section */}
       <div className='bg-white py-24 sm:py-32'>
@@ -328,7 +335,7 @@ channel.bind('my-event', (data) => {
     mt-6            /* gap from the content above */
     mb-4            /* gap from the bottom of the card */
     block
-    w-full          /* fill the card’s inner width */
+    w-full          /* fill the card's inner width */
     rounded-full      /* smooth corners */
     bg-[#6366F1]     /* blue background */
     py-3            /* vertical padding */
@@ -384,7 +391,7 @@ channel.bind('my-event', (data) => {
     mt-6            /* gap from the content above */
     mb-4            /* gap from the bottom of the card */
     block
-    w-full          /* fill the card’s inner width */
+    w-full          /* fill the card's inner width */
     rounded-full      /* smooth corners */
     bg-[#6366F1]     /* blue background */
     py-3            /* vertical padding */
@@ -434,7 +441,7 @@ channel.bind('my-event', (data) => {
     mt-6            /* gap from the content above */
     mb-4            /* gap from the bottom of the card */
     block
-    w-full          /* fill the card’s inner width */
+    w-full          /* fill the card's inner width */
     rounded-full      /* smooth corners */
     bg-[#6366F1]     /* blue background */
     py-3            /* vertical padding */
@@ -483,7 +490,7 @@ channel.bind('my-event', (data) => {
                 mt-6            /* gap from the content above */
                 mb-4            /* gap from the bottom of the card */
                 block
-                w-full          /* fill the card’s inner width */
+                w-full          /* fill the card's inner width */
                 rounded-full      /* smooth corners */
                 bg-[#6366F1]     /* blue background */
                 py-3            /* vertical padding */
@@ -568,7 +575,7 @@ channel.bind('my-event', (data) => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
