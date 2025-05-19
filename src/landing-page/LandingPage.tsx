@@ -276,14 +276,14 @@ channel.bind('my-event', (data) => {
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl'>Simple, transparent pricing</h2>
             <p className='mt-6 text-base leading-7 text-gray-600'>
-              Affordable plans for projects of all sizes. Enjoy significant cost savings without compromising on features or reliability. (Often up to 70% less than services like Pusher).
+              Start for free and scale as you grow. Get in touch when you need more resources for your project.
             </p>
           </div>
-          <div className='mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 sm:mt-20 lg:max-w-6xl lg:grid-cols-4'>
+          <div className='mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 sm:mt-20 lg:max-w-4xl lg:grid-cols-2'>
             {/* Hobby Plan */}
             <div className='flex flex-col h-full rounded-3xl bg-white px-5 py-8 ring-1 ring-gray-200'>
               <div className='flex-grow'>
-                <h3 className='text-xl font-semibold text-gray-900'>Hobby</h3>
+                <h3 className='text-xl font-semibold text-gray-900'>Free</h3>
                 <p className='mt-4 text-sm text-gray-600'>Perfect for small projects and testing</p>
                 <div className='mt-6 flex items-baseline'>
                   <span className='text-3xl font-bold tracking-tight text-gray-900'>$0</span>
@@ -305,145 +305,39 @@ channel.bind('my-event', (data) => {
                 </ul>
               </div>
               <Link
-  to="/signup"
-  className="
-    mt-6            /* gap from the content above */
-    mb-4            /* gap from the bottom of the card */
-    block
-    w-full          /* fill the card's inner width */
-    rounded-full      /* smooth corners */
-    bg-[#6366F1]     /* blue background */
-    py-3            /* vertical padding */
-    text-center
-    font-semibold
-    text-white
-    hover:bg-blue-700
-    focus:outline-none focus:ring-2 focus:ring-blue-500
-    transition
-  "
->
-  Get started
-</Link>
-
+                to="/signup"
+                className="
+                  mt-6            /* gap from the content above */
+                  mb-4            /* gap from the bottom of the card */
+                  block
+                  w-full          /* fill the card's inner width */
+                  rounded-full      /* smooth corners */
+                  bg-[#6366F1]     /* blue background */
+                  py-3            /* vertical padding */
+                  text-center
+                  font-semibold
+                  text-white
+                  hover:bg-blue-700
+                  focus:outline-none focus:ring-2 focus:ring-blue-500
+                  transition
+                "
+              >
+                Get started
+              </Link>
             </div>
 
-            {/* Startup Plan */}
-            <div className='flex flex-col h-full relative rounded-3xl bg-white px-5 py-8 ring-2 ring-[#6366F1]'>
-              <div className='absolute -top-5 left-1/2 -translate-x-1/2'>
-                <span className='inline-flex rounded-full bg-[#6366F1] px-4 py-1 text-xs font-semibold text-white'>
-                  Most popular
-                </span>
-              </div>
-              <div className='flex-grow'>
-                <h3 className='text-xl font-semibold text-gray-900'>Startup</h3>
-                <p className='mt-4 text-sm text-gray-600'>Perfect for growing applications</p>
-                <div className='mt-6 flex items-baseline'>
-                  <span className='text-3xl font-bold tracking-tight text-gray-900'>$39.99</span>
-                  <span className='ml-1 text-sm font-medium text-gray-500'>/month</span>
-                </div>
-                <ul className='mt-6 space-y-3 list-none marker:content-none'>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>1,000 concurrent connections</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>1M messages/day</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>Priority support</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>All Hobby features</span>
-                  </li>
-                </ul>
-              </div>
-              <Link
-  to="/signup"
-  className="
-    mt-6            /* gap from the content above */
-    mb-4            /* gap from the bottom of the card */
-    block
-    w-full          /* fill the card's inner width */
-    rounded-full      /* smooth corners */
-    bg-[#6366F1]     /* blue background */
-    py-3            /* vertical padding */
-    text-center
-    font-semibold
-    text-white
-    hover:bg-blue-700
-    focus:outline-none focus:ring-2 focus:ring-blue-500
-    transition
-  "
->
-  Get started
-</Link>
-            </div>
-
-            {/* Scale Plan */}
+            {/* Need More Plan */}
             <div className='flex flex-col h-full rounded-3xl bg-white px-5 py-8 ring-1 ring-gray-200'>
               <div className='flex-grow'>
-                <h3 className='text-xl font-semibold text-gray-900'>Scale</h3>
-                <p className='mt-4 text-sm text-gray-600'>For high-traffic applications</p>
+                <h3 className='text-xl font-semibold text-gray-900'>Need More?</h3>
+                <p className='mt-4 text-sm text-gray-600'>Custom solutions for your specific needs</p>
                 <div className='mt-6 flex items-baseline'>
-                  <span className='text-3xl font-bold tracking-tight text-gray-900'>$99.99</span>
-                  <span className='ml-1 text-sm font-medium text-gray-500'>/month</span>
+                  <span className='text-3xl font-bold tracking-tight text-gray-900'>Contact Us</span>
                 </div>
                 <ul className='mt-6 space-y-3 list-none marker:content-none'>
                   <li className='flex gap-x-2 before:content-none'>
                     <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>3,000 concurrent connections</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>6M messages/day</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>Dedicated support</span>
-                  </li>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>All Startup features</span>
-                  </li>
-                </ul>
-              </div>
-              <Link
-  to="/signup"
-  className="
-    mt-6            /* gap from the content above */
-    mb-4            /* gap from the bottom of the card */
-    block
-    w-full          /* fill the card's inner width */
-    rounded-full      /* smooth corners */
-    bg-[#6366F1]     /* blue background */
-    py-3            /* vertical padding */
-    text-center
-    font-semibold
-    text-white
-    hover:bg-blue-700
-    focus:outline-none focus:ring-2 focus:ring-blue-500
-    transition
-  "
->
-  Get started
-</Link>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div className='flex flex-col h-full rounded-3xl bg-white px-5 py-8 ring-1 ring-gray-200'>
-              <div className='flex-grow'>
-                <h3 className='text-xl font-semibold text-gray-900'>Enterprise</h3>
-                <p className='mt-4 text-sm text-gray-600'>Custom solutions for large-scale needs</p>
-                <div className='mt-6 flex items-baseline'>
-                  <span className='text-3xl font-bold tracking-tight text-gray-900'>Custom</span>
-                </div>
-                <ul className='mt-6 space-y-3 list-none marker:content-none'>
-                  <li className='flex gap-x-2 before:content-none'>
-                    <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>10,000+ concurrent connections</span>
+                    <span className='text-sm text-gray-600'>Unlimited concurrent connections</span>
                   </li>
                   <li className='flex gap-x-2 before:content-none'>
                     <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
@@ -455,28 +349,28 @@ channel.bind('my-event', (data) => {
                   </li>
                   <li className='flex gap-x-2 before:content-none'>
                     <CheckIcon className='h-5 w-5 flex-shrink-0 text-[#6366F1]' />
-                    <span className='text-sm text-gray-600'>24/7 dedicated support</span>
+                    <span className='text-sm text-gray-600'>Priority support</span>
                   </li>
                 </ul>
               </div>
               <a
                 href='mailto:hello@jetsocket.io'
                 className="
-                mt-6            /* gap from the content above */
-                mb-4            /* gap from the bottom of the card */
-                block
-                w-full          /* fill the card's inner width */
-                rounded-full      /* smooth corners */
-                bg-[#6366F1]     /* blue background */
-                py-3            /* vertical padding */
-                text-center
-                font-semibold
-                text-white
-                hover:bg-blue-700
-                focus:outline-none focus:ring-2 focus:ring-blue-500
-                transition"
+                  mt-6
+                  mb-4
+                  block
+                  w-full
+                  rounded-full
+                  bg-[#6366F1]
+                  py-3
+                  text-center
+                  font-semibold
+                  text-white
+                  hover:bg-blue-700
+                  focus:outline-none focus:ring-2 focus:ring-blue-500
+                  transition"
               >
-                Contact Sales
+                Contact Us
               </a>
             </div>
           </div>

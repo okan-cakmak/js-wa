@@ -395,7 +395,7 @@ export const DashboardPage = () => {
                 onClick={() => setIsUpgradeModalOpen(true)}
                 auto
               >
-                Need more connections? Upgrade Plan
+                Need more connections? Contact Us
               </Button>
             </Grid>
           </Grid.Container>
@@ -907,68 +907,26 @@ channel.bind('my-event', (data) => {
       </Modal>
 
       <Modal visible={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} width="35rem">
-        <Modal.Title>Upgrade Your Plan</Modal.Title>
+        <Modal.Title>Need More Connections?</Modal.Title>
         <Modal.Content>
-          <Text p>Choose a plan that fits your needs and scale as you grow.</Text>
+          <Text p>We are glad you enjoy Jetsocket! Please leave a message to us, and we can create a custom plan for your specific needs.</Text>
           <Spacer h={1} />
-          
-          <Grid.Container gap={2}>
-            <Grid xs={24} md={12}>
-              <Card shadow width="100%" style={{ height: '100%' }}>
-                <Card.Content>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text h4>Startup</Text>
-                    <Tag type="success">Popular</Tag>
-                  </div>
-                  <Text h3>${34.99}<Text small>/month</Text></Text>
-                  <Spacer h={1} />
-                  <Text p>Perfect for growing applications with moderate traffic.</Text>
-                  <Spacer h={1} />
-                  <div>
-                    <Text p>✓ Up to 200 concurrent connections</Text>
-                    <Text p>✓ 500,000 daily messages</Text>
-                    <Text p>✓ Advanced analytics</Text>
-                    <Text p>✓ 24/7 support</Text>
-                    <Text p>✓ Custom domains</Text>
-                  </div>
-                  <Spacer h={1} />
-                  <Button type="success" width="100%" onClick={() => handleUpgrade('Startup')}>Upgrade to Startup</Button>
-                </Card.Content>
-              </Card>
-            </Grid>
-            
-            <Grid xs={24} md={12}>
-              <Card shadow width="100%" style={{ height: '100%' }}>
-                <Card.Content>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text h4>Scale</Text>
-                    <Tag type="secondary">Enterprise</Tag>
-                  </div>
-                  <Text h3>${99.99}<Text small>/month</Text></Text>
-                  <Spacer h={1} />
-                  <Text p>For high-traffic applications with enterprise requirements.</Text>
-                  <Spacer h={1} />
-                  <div>
-                    <Text p>✓ Up to 300 concurrent connections</Text>
-                    <Text p>✓ 1,000,000 daily messages</Text>
-                    <Text p>✓ Advanced analytics & monitoring</Text>
-                    <Text p>✓ Priority 24/7 support</Text>
-                    <Text p>✓ Custom domains</Text>
-                    <Text p>✓ Dedicated infrastructure</Text>
-                  </div>
-                  <Spacer h={1} />
-                  <Button type="secondary" width="100%" onClick={() => handleUpgrade('Scale')}>Upgrade to Scale</Button>
-                </Card.Content>
-              </Card>
-            </Grid>
-          </Grid.Container>
+          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+            <Text p>Reach out to us at <Text b>hello@jetsocket.io</Text> and we'll help with your requirements.</Text>
+            <Spacer h={1} />
+            <Button 
+              type="success" 
+              onClick={() => {
+                window.location.href = 'mailto:hello@jetsocket.io?subject=Jetsocket%20Connection%20Inquiry';
+                setIsUpgradeModalOpen(false);
+              }}
+            >
+              Email Us
+            </Button>
+          </div>
           
           <Spacer h={1} />
-          <Note>
-            All plans include a 14-day free trial. You can cancel anytime during the trial period.
-          </Note>
         </Modal.Content>
-        <Modal.Action passive onClick={() => setIsUpgradeModalOpen(false)}>Cancel</Modal.Action>
       </Modal>
     </Page>
   );
