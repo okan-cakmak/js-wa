@@ -46,6 +46,10 @@ export const DashboardPage = () => {
     name: '',
     description: '',
   });
+  const [appSettingsForm, setAppSettingsForm] = useState({
+    name: '',
+    description: ''
+  });
   const [activeTab, setActiveTab] = useState('overview');
   const { setToast } = useToasts();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -58,6 +62,16 @@ export const DashboardPage = () => {
 
   const hasApp = connectedApps && connectedApps.length > 0;
   const app = hasApp ? connectedApps[0] : null;
+
+  // Update app settings form when app data changes
+  useEffect(() => {
+    if (app) {
+      setAppSettingsForm({
+        name: app.name || '',
+        description: app.description || ''
+      });
+    }
+  }, [app]);
 
   // Calculate demo signature
   useEffect(() => {
@@ -286,6 +300,50 @@ export const DashboardPage = () => {
         type: 'error'
       });
     }
+  };
+
+  const handleToggleClientEvents = async (app) => {
+    try {
+      await updateApplication({
+        id: app.id,
+        enableClientMessages: !app.enableClientMessages
+      });
+      setToast({
+        text: `Client events ${!app.enableClientMessages ? 'enabled' : 'disabled'} successfully`,
+        type: 'success'
+      });
+    } catch (error) {
+      setToast({
+        text: 'Failed to update client events setting',
+        type: 'error'
+      });
+    }
+  };
+
+  const handleUpdateAppSettings = async (app) => {
+    try {
+      await updateApplication({
+        id: app.id,
+        name: appSettingsForm.name,
+        description: appSettingsForm.description
+      });
+      setToast({
+        text: 'Application settings updated successfully',
+        type: 'success'
+      });
+    } catch (error) {
+      setToast({
+        text: 'Failed to update application settings: ' + error.message,
+        type: 'error'
+      });
+    }
+  };
+
+  const handleAppSettingsChange = (value, field) => {
+    setAppSettingsForm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   if (error) {
@@ -695,7 +753,8 @@ channel.bind('my-event', (data) => {
                             <Text small>App Name</Text>
                             <Input 
                               width="100%" 
-                              value={app.name} 
+                              value={appSettingsForm.name} 
+                              onChange={(e) => handleAppSettingsChange(e.target.value, 'name')}
                               placeholder="Application name"
                             />
                           </div>
@@ -705,13 +764,18 @@ channel.bind('my-event', (data) => {
                             <Text small>Description</Text>
                             <Textarea 
                               width="100%" 
-                              value={app.description || ''} 
+                              value={appSettingsForm.description} 
+                              onChange={(e) => handleAppSettingsChange(e.target.value, 'description')}
                               placeholder="Application description"
                             />
                           </div>
                         </Grid>
                         <Grid xs={24}>
-                          <Button type="secondary" auto>Update</Button>
+                          <Button 
+                            type="secondary" 
+                            auto
+                            onClick={() => handleUpdateAppSettings(app)}
+                          >Update</Button>
                         </Grid>
                       </Grid.Container>
                     </Card.Content>
@@ -725,19 +789,13 @@ channel.bind('my-event', (data) => {
                         <Grid xs={24}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                             <div>
-                              <Text>Force TLS</Text>
-                              <Text small type="secondary">Only WebSocket connections over TLS will be accepted</Text>
-                            </div>
-                            <Toggle />
-                          </div>
-                        </Grid>
-                        <Grid xs={24}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                            <div>
                               <Text>Enable Client Events</Text>
                               <Text small type="secondary">Allow clients to communicate directly with each other</Text>
                             </div>
-                            <Toggle />
+                            <Toggle 
+                              checked={app.enableClientMessages}
+                              onChange={() => handleToggleClientEvents(app)}
+                            />
                           </div>
                         </Grid>
                         <Grid xs={24}>
@@ -750,15 +808,6 @@ channel.bind('my-event', (data) => {
                               checked={app.enableUserAuthentication}
                               onChange={() => handleToggleUserAuth(app)}
                             />
-                          </div>
-                        </Grid>
-                        <Grid xs={24}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                            <div>
-                              <Text>Enable Subscription Counting</Text>
-                              <Text small type="secondary">Track the number of subscribers on each channel</Text>
-                            </div>
-                            <Toggle />
                           </div>
                         </Grid>
                       </Grid.Container>

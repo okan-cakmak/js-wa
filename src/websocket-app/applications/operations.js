@@ -106,7 +106,10 @@ export const updateApplication = async (args, context) => {
     where: { id: args.id },
     data: {
       enabled: args.enabled !== undefined ? args.enabled : app.enabled,
-      enableUserAuthentication: args.enableUserAuthentication !== undefined ? args.enableUserAuthentication : app.enableUserAuthentication
+      enableUserAuthentication: args.enableUserAuthentication !== undefined ? args.enableUserAuthentication : app.enableUserAuthentication,
+      enableClientMessages: args.enableClientMessages !== undefined ? args.enableClientMessages : app.enableClientMessages,
+      name: args.name !== undefined ? args.name : app.name,
+      description: args.description !== undefined ? args.description : app.description
     }
   })
 }
