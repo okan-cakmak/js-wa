@@ -22,7 +22,7 @@ export default function Hero() {
               Powerful <span className='text-yellow-600 dark:text-yellow-500'>Real-time</span> Infrastructure
             </h1>
             <p className='mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300'>
-              Build scalable real-time applications with JetSocket's battle-tested WebSocket platform. 
+              Build scalable real-time applications with Jetsocket's battle-tested WebSocket platform. 
               Reliable, fast, and built for production workloads.
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
@@ -55,13 +55,13 @@ export default function Hero() {
                 <pre className='overflow-x-auto'>
                   <code className='text-sm text-gray-300'>
                     <span className='text-blue-400'>import</span>{' '}
-                    <span className='text-yellow-400'>JetSocket</span>{' '}
+                    <span className='text-yellow-400'>Jetsocket</span>{' '}
                     <span className='text-blue-400'>from</span>{' '}
                     <span className='text-green-400'>'jetsocket'</span>;
                     {'\n\n'}
                     <span className='text-purple-400'>const</span>{' '}
                     socket = <span className='text-blue-400'>new</span>{' '}
-                    <span className='text-yellow-400'>JetSocket</span>(
+                    <span className='text-yellow-400'>Jetsocket</span>(
                     <span className='text-green-400'>'YOUR_APP_KEY'</span>);
                     {'\n\n'}
                     <span className='text-gray-500'>// Subscribe to real-time updates</span>{'\n'}

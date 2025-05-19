@@ -6,7 +6,7 @@ import { Dialog } from '@headlessui/react';
 import { BiLogIn } from 'react-icons/bi';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { HiBars3 } from 'react-icons/hi2';
-import logo from '../../static/logo.webp';
+import logo from '../../static/logo.svg';
 import DropdownUser from '../../../user/DropdownUser';
 import { UserMenuItems } from '../../../user/UserMenuItems';
 import DarkModeSwitcher from '../DarkModeSwitcher';
@@ -18,7 +18,7 @@ export interface NavigationItem {
   to: string;
 }
 
-const NavLogo = () => <img className='h-8 w-8' src={logo} alt='JetSocket' />;
+const NavLogo = () => <img className='h-8 w-8' src={logo} alt='Jetsocket' />;
 
 export default function AppNavBar({ navigationItems }: { navigationItems: NavigationItem[] }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -41,7 +41,7 @@ export default function AppNavBar({ navigationItems }: { navigationItems: Naviga
             >
               <NavLogo />
               {isLandingPage && (
-                <span className='ml-2 text-sm font-semibold leading-6 dark:text-white'>JetSocket</span>
+                <span className='ml-2 text-sm font-semibold leading-6 dark:text-white'>Jetsocket</span>
               )}
             </WaspRouterLink>
           </div>
@@ -79,7 +79,7 @@ export default function AppNavBar({ navigationItems }: { navigationItems: Naviga
         <Dialog.Panel className='fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:text-white dark:bg-boxdark px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
           <div className='flex items-center justify-between'>
             <WaspRouterLink to={routes.LandingPageRoute.to} className='-m-1.5 p-1.5'>
-              <span className='sr-only'>JetSocket</span>
+              <span className='sr-only'>Jetsocket</span>
               <NavLogo />
             </WaspRouterLink>
             <button

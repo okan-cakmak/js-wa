@@ -88,13 +88,13 @@ export const DashboardPage = () => {
   // Initialize Pusher when Getting Started tab is active and we have app data
   useEffect(() => {
     if (activeTab === 'getting-started' && hasApp && app && !pusherConnection) {
-      // Add JetSocket script dynamically
+      // Add Jetsocket script dynamically
       const script = document.createElement('script');
       script.src = '/jetsocket.min.js';
       script.async = true;
       script.onload = () => {
-        // Initialize JetSocket
-        const jetSocket = new window.JetSocket({
+        // Initialize Jetsocket
+        const jetSocket = new window.Jetsocket({
           appKey: app.key,
           wsHost: 'ws.jetsocket.io',
           encrypted: true,
@@ -104,7 +104,7 @@ export const DashboardPage = () => {
         jetSocket.on('connection', () => {
           setConnectionStatus('Connected');
           setToast({
-            text: 'Successfully connected to JetSocket',
+            text: 'Successfully connected to Jetsocket',
             type: 'success'
           });
         });
@@ -308,7 +308,7 @@ export const DashboardPage = () => {
         <Card shadow>
           <Card.Content>
             <div style={{ textAlign: 'center', padding: '40px 0' }}>
-              <Text h3>Welcome to JetSocket!</Text>
+              <Text h3>Welcome to Jetsocket!</Text>
               <Text p>Create your WebSocket application to get started.</Text>
               <Spacer h={1} />
               <Button 
@@ -459,7 +459,7 @@ export const DashboardPage = () => {
               <Card>
                 <Card.Content>
                   <div>
-                    <Text h3>Welcome to JetSocket!</Text>
+                    <Text h3>Welcome to Jetsocket!</Text>
                     <Text p>Here's how to get started with your WebSocket application.</Text>
                     
                     {hasApp && (
@@ -483,7 +483,7 @@ export const DashboardPage = () => {
                             <Text b>Live Demo Running!</Text>
                           </div>
                           <Text small type="secondary">
-                            This page is actively using JetSocket right now - you're looking at a live WebSocket connection in action!
+                            This page is actively using Jetsocket right now - you're looking at a live WebSocket connection in action!
                           </Text>
                         </div>
                         <style jsx>{`
@@ -528,9 +528,9 @@ JETSOCKET_APP_SECRET="${app?.secret || ''}"`}</Code>
                     <Text h4>3. Initialize the client</Text>
                     <Card>
                       <div style={{ padding: '10px' }}>
-                        <Code block width="100%">{`import JetSocket from 'jetsocket';
+                        <Code block width="100%">{`import Jetsocket from 'jetsocket';
 
-const jetSocket = new JetSocket('YOUR_APP_KEY', {
+const jetSocket = new Jetsocket('YOUR_APP_KEY', {
   cluster: 'eu',
   encrypted: true
 });`}</Code>

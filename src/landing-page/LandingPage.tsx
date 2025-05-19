@@ -8,7 +8,8 @@ import {
   ArrowPathIcon, 
   CloudArrowUpIcon,
   CheckIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  BeakerIcon
 } from '@heroicons/react/24/outline';
 
 type PublishLanguage = 'nodejs';
@@ -19,18 +20,18 @@ const LandingPage = () => {
   const [subscribeTab, setSubscribeTab] = useState<SubscribeLanguage>('javascript');
 
   const publishExamples: Record<PublishLanguage, string> = {
-    nodejs: `const jetsocket = new JetSocket('YOUR_APP_KEY', {
+    nodejs: `const jetsocket = new Jetsocket('YOUR_APP_KEY', {
   cluster: 'eu',
   encrypted: true
 });
 
 jetsocket.trigger('my-channel', 'my-event', {
-  message: 'Hello from JetSocket!'
+  message: 'Hello from Jetsocket!'
 });`
   };
 
   const subscribeExamples: Record<SubscribeLanguage, string> = {
-    javascript: `const jetsocket = new JetSocket('YOUR_APP_KEY', {
+    javascript: `const jetsocket = new Jetsocket('YOUR_APP_KEY', {
   cluster: 'eu',
   encrypted: true
 });
@@ -45,22 +46,34 @@ channel.bind('my-event', (data) => {
 
   return (
     <main className='min-h-screen bg-white'>
+      {/* Beta Banner */}
+      <div className='bg-yellow-100'>
+        <div className='mx-auto max-w-7xl px-6 py-3 sm:px-6 lg:px-8'>
+          <div className='flex items-center justify-center gap-x-2'>
+            <BeakerIcon className='h-5 w-5 text-yellow-800' />
+            <p className='text-sm font-medium text-yellow-800'>
+              Jetsocket is currently in beta. Join us in shaping the future of real-time communication!
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className='relative isolate overflow-hidden bg-gradient-to-b from-indigo-100/20' aria-labelledby="hero-heading">
         <div className='mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40'>
           <div className='mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8'>
             <div className='mt-24 sm:mt-32 lg:mt-16'>
-              <a href='#pricing' className='inline-flex space-x-6'>
+              <a href='#features' className='inline-flex space-x-6'>
                 <span className='rounded-full bg-indigo-600/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-600/10'>
-                  Save up to 70% vs Pusher
+                  Blazing Fast & Reliable Real-Time
                 </span>
               </a>
             </div>
             <h1 id="hero-heading" className='mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
-              The Cost-Effective Pusher Alternative You've Been Waiting For
+              Power Your Applications with Lightning-Fast Real-Time Messaging
             </h1>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
-              Drop-in replacement for Pusher. Same API, better pricing. Switch in minutes with zero code changes.
+              Jetsocket delivers high-performance, scalable, and developer-friendly real-time infrastructure. Build robust features quickly and affordably. Seamlessly migrate from other services like Pusher with our compatible API.
             </p>
             <div className='mt-10 flex items-center gap-x-6'>
               <Link
@@ -80,7 +93,7 @@ channel.bind('my-event', (data) => {
                   focus:outline-none focus:ring-2 focus:ring-blue-500
                   transition
                 "
-                aria-label="Get started with JetSocket"
+                aria-label="Get started with Jetsocket"
               >
                 Get started
               </Link>
@@ -160,12 +173,12 @@ channel.bind('my-event', (data) => {
       <section className='bg-white py-24 sm:py-32' aria-labelledby="features-heading">
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 id="features-heading" className='text-base font-semibold leading-7 text-indigo-600'>Powerful Features</h2>
+            <h2 id="features-heading" className='text-base font-semibold leading-7 text-indigo-600'>Why Choose Jetsocket?</h2>
             <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-              Everything you need for real-time applications
+              The Modern Solution for Real-Time Communication
             </p>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
-              Built by developers, for developers. Get all the features you love about Pusher, with better pricing and support.
+              Jetsocket is engineered from the ground up for unmatched performance, massive scalability, and a delightful developer experience. Focus on building features, not managing infrastructure.
             </p>
           </div>
           <div className='mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none'>
@@ -184,22 +197,22 @@ channel.bind('my-event', (data) => {
               <div className='flex flex-col'>
                 <dt className='flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900'>
                   <ArrowPathIcon className='h-5 w-5 flex-none text-indigo-600' aria-hidden="true" />
-                  Drop-in Replacement
+                  Seamless Integration & Migration
                 </dt>
                 <dd className='mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600'>
                   <p className='flex-auto'>
-                    100% API compatibility with Pusher. Change your credentials, and you're ready to go.
+                    Effortlessly integrate Jetsocket into your new or existing projects. Our Pusher-compatible API allows for a smooth transition in minutes if you're migrating.
                   </p>
                 </dd>
               </div>
               <div className='flex flex-col'>
                 <dt className='flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900'>
                   <CurrencyDollarIcon className='h-5 w-5 flex-none text-indigo-600' aria-hidden="true" />
-                  70% Cost Savings
+                  Predictable & Competitive Pricing
                 </dt>
                 <dd className='mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600'>
                   <p className='flex-auto'>
-                    Pay significantly less for the same features. Transparent pricing with no hidden costs.
+                    Get premium real-time features at a fraction of the cost of alternatives. Our transparent pricing ensures no surprises.
                   </p>
                 </dd>
               </div>
@@ -212,9 +225,9 @@ channel.bind('my-event', (data) => {
       <section id='how-it-works' className='bg-gray-50 py-24 sm:py-32' aria-labelledby="how-it-works-heading">
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl lg:text-center'>
-            <h2 id="how-it-works-heading" className='text-base font-semibold leading-7 text-indigo-600'>Simple Integration</h2>
+            <h2 id="how-it-works-heading" className='text-base font-semibold leading-7 text-indigo-600'>Get Started in Minutes</h2>
             <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-              Switch to JetSocket in 3 Steps
+              Launch Your Real-Time Features with Ease
             </p>
           </div>
           <div className='mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24'>
@@ -224,7 +237,7 @@ channel.bind('my-event', (data) => {
                   <div className='absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600'>
                     <span className='text-white'>1</span>
                   </div>
-                  Sign Up for JetSocket
+                  Sign Up for Jetsocket
                 </dt>
                 <dd className='mt-2 text-base leading-7 text-gray-600'>
                   Create your account and get your API credentials instantly
@@ -235,10 +248,10 @@ channel.bind('my-event', (data) => {
                   <div className='absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600'>
                     <span className='text-white'>2</span>
                   </div>
-                  Update Credentials
+                  Configure Your Application
                 </dt>
                 <dd className='mt-2 text-base leading-7 text-gray-600'>
-                  Replace your Pusher credentials with JetSocket's - no other changes needed
+                  Integrate Jetsocket using your new API credentials. If migrating, our Pusher-compatible API makes this step a breeze.
                 </dd>
               </div>
               <div className='relative pl-16'>
@@ -246,10 +259,10 @@ channel.bind('my-event', (data) => {
                   <div className='absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600'>
                     <span className='text-white'>3</span>
                   </div>
-                  Deploy & Save
+                  Go Live & Scale
                 </dt>
                 <dd className='mt-2 text-base leading-7 text-gray-600'>
-                  Deploy your updated application and start saving immediately
+                  Deploy your application and enjoy fast, reliable real-time messaging. Scale your usage as your application grows.
                 </dd>
               </div>
             </dl>
@@ -257,51 +270,13 @@ channel.bind('my-event', (data) => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <div className='bg-white py-24 sm:py-32'>
-        <div className='mx-auto max-w-7xl px-6 lg:px-8'>
-          <div className='mx-auto max-w-xl text-center'>
-            <h2 className='text-lg font-semibold leading-8 tracking-tight text-indigo-600'>Testimonials</h2>
-            <p className='mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-              Loved by Developers
-            </p>
-          </div>
-          <div className='mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none'>
-            <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-              <figure className='rounded-2xl bg-gray-50 p-8'>
-                <blockquote className='text-gray-600'>
-                  "Switching to JetSocket was a no-brainer. Same API, better pricing, and their support is incredible. We're saving $800/month!"
-                </blockquote>
-                <figcaption className='mt-6 flex items-center gap-x-4'>
-                  <div>
-                    <div className='font-semibold'>Sarah Chen</div>
-                    <div className='text-gray-600'>CTO at TechFlow</div>
-                  </div>
-                </figcaption>
-              </figure>
-              <figure className='rounded-2xl bg-gray-50 p-8'>
-                <blockquote className='text-gray-600'>
-                  "The migration took less than 5 minutes. Just changed the credentials and everything worked perfectly. It's truly a drop-in replacement."
-                </blockquote>
-                <figcaption className='mt-6 flex items-center gap-x-4'>
-                  <div>
-                    <div className='font-semibold'>Mark Thompson</div>
-                    <div className='text-gray-600'>Lead Developer at StartupX</div>
-                  </div>
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Pricing Section */}
       <div id='pricing' className='bg-gray-50 py-24 sm:py-32'>
         <div className='mx-auto max-w-7xl px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl'>Simple, transparent pricing</h2>
             <p className='mt-6 text-base leading-7 text-gray-600'>
-              Save up to 70% compared to Pusher. No hidden fees, no surprises.
+              Affordable plans for projects of all sizes. Enjoy significant cost savings without compromising on features or reliability. (Often up to 70% less than services like Pusher).
             </p>
           </div>
           <div className='mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 sm:mt-20 lg:max-w-6xl lg:grid-cols-4'>
@@ -517,7 +492,7 @@ channel.bind('my-event', (data) => {
               <div className='pt-6'>
                 <dt>
                   <button className='flex w-full items-start justify-between text-left text-gray-900'>
-                    <span className='text-base font-semibold leading-7'>How compatible is JetSocket with Pusher?</span>
+                    <span className='text-base font-semibold leading-7'>What makes Jetsocket different from other real-time services?</span>
                     <span className='ml-6 flex h-7 items-center'>
                       <ChevronDownIcon className='h-6 w-6' />
                     </span>
@@ -525,7 +500,22 @@ channel.bind('my-event', (data) => {
                 </dt>
                 <dd className='mt-2 pr-12'>
                   <p className='text-base leading-7 text-gray-600'>
-                    JetSocket is 100% API compatible with Pusher. All Pusher features including channels, presence channels, 
+                    Jetsocket is built for modern application needs, focusing on superior performance, scalability, developer experience, and cost-effectiveness. We offer a robust feature set with transparent pricing, allowing you to build and scale without worrying about complex infrastructure or surprise bills.
+                  </p>
+                </dd>
+              </div>
+              <div className='pt-6'>
+                <dt>
+                  <button className='flex w-full items-start justify-between text-left text-gray-900'>
+                    <span className='text-base font-semibold leading-7'>How compatible is Jetsocket with Pusher?</span>
+                    <span className='ml-6 flex h-7 items-center'>
+                      <ChevronDownIcon className='h-6 w-6' />
+                    </span>
+                  </button>
+                </dt>
+                <dd className='mt-2 pr-12'>
+                  <p className='text-base leading-7 text-gray-600'>
+                    Jetsocket is 100% API compatible with Pusher. All Pusher features including channels, presence channels, 
                     client events, and webhooks work exactly the same way. Just change your credentials and you're good to go.
                   </p>
                 </dd>
@@ -551,15 +541,80 @@ channel.bind('my-event', (data) => {
         </div>
       </div>
 
+      {/* Contact Form Section */}
+      <div className='bg-white py-24 sm:py-32'>
+        <div className='mx-auto max-w-7xl px-6 lg:px-8'>
+          <div className='mx-auto max-w-2xl text-center'>
+            <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>Get in Touch</h2>
+            <p className='mt-2 text-lg leading-8 text-gray-600'>
+              Have questions? We'd love to hear from you.
+            </p>
+          </div>
+          <form action="mailto:hello@jetsocket.io" method="post" encType="text/plain" className='mx-auto mt-16 max-w-xl'>
+            <div className='grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2'>
+              <div className='sm:col-span-2'>
+                <label htmlFor='name' className='block text-sm font-semibold leading-6 text-gray-900'>
+                  Name
+                </label>
+                <div className='mt-2.5'>
+                  <input
+                    type='text'
+                    name='name'
+                    id='name'
+                    autoComplete='name'
+                    className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+              <div className='sm:col-span-2'>
+                <label htmlFor='email' className='block text-sm font-semibold leading-6 text-gray-900'>
+                  Email
+                </label>
+                <div className='mt-2.5'>
+                  <input
+                    type='email'
+                    name='email'
+                    id='email'
+                    autoComplete='email'
+                    className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+              <div className='sm:col-span-2'>
+                <label htmlFor='message' className='block text-sm font-semibold leading-6 text-gray-900'>
+                  Message
+                </label>
+                <div className='mt-2.5'>
+                  <textarea
+                    name='message'
+                    id='message'
+                    rows={4}
+                    className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='mt-10'>
+              <button
+                type='submit'
+                className='block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              >
+                Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       {/* Final CTA Section */}
       <div className='bg-white'>
         <div className='mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8'>
           <div className='relative isolate overflow-hidden bg-gray-900 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16'>
             <h2 className='mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl'>
-              Ready to reduce your real-time infrastructure costs?
+              Ready to Power Your Apps with Jetsocket?
             </h2>
             <p className='mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300'>
-              Join thousands of developers who've switched to JetSocket. Start your free trial today.
+              Experience the difference with our high-performance, scalable, and affordable real-time messaging solution. Start your free trial today.
             </p>
             <div className='mt-10 flex items-center justify-center gap-x-6'>
               <Link

@@ -44,7 +44,7 @@ export const testimonials = [
     role: 'Lead Developer @ TechCorp',
     avatarSrc: avatarPlaceholder,
     socialUrl: '#',
-    quote: 'JetSocket delivers the performance and reliability we need. Our real-time features have never been more stable.',
+    quote: 'Jetsocket delivers the performance and reliability we need. Our real-time features have never been more stable.',
   },
   {
     name: 'Michael Rodriguez',
@@ -58,15 +58,15 @@ export const testimonials = [
     role: 'Senior Engineer @ ScaleUp',
     avatarSrc: avatarPlaceholder,
     socialUrl: '#',
-    quote: 'We handle millions of concurrent connections with rock-solid stability. JetSocket just works.',
+    quote: 'We handle millions of concurrent connections with rock-solid stability. Jetsocket just works.',
   },
 ];
 
 export const faqs = [
   {
     id: 1,
-    question: 'How does JetSocket compare to Pusher?',
-    answer: 'JetSocket offers superior performance, better pricing, and a more developer-friendly experience. Our optimized infrastructure ensures reliable real-time communication at scale.',
+    question: 'How does Jetsocket compare to Pusher?',
+    answer: 'Jetsocket offers superior performance, better pricing, and a more developer-friendly experience. Our optimized infrastructure ensures reliable real-time communication at scale.',
   },
   {
     id: 2,

@@ -3,52 +3,52 @@ app OpenSaaS {
     version: "^0.16.0"
   },
 
-  title: "JetSocket - Real-time WebSocket Applications Made Simple",
+  title: "Jetsocket - Real-time WebSocket Applications Made Simple",
 
   head: [
     "<meta charset='utf-8' />",
     "<meta name='viewport' content='width=device-width, initial-scale=1.0' />",
-    "<meta name='description' content='Looking for a Pusher alternative? JetSocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
-    "<meta name='author' content='JetSocket' />",
+    "<meta name='description' content='Looking for a Pusher alternative? Jetsocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
+    "<meta name='author' content='Jetsocket' />",
     "<meta name='keywords' content='pusher alternative, pusher replacement, websocket, real-time, web applications, saas, development tools, api, socket.io, real-time communication, pusher vs jetsocket, ably, pubsub, real-time messaging, websocket alternative, real-time data, websocket api, real-time api' />",
     
     // Open Graph / Facebook
     "<meta property='og:type' content='website' />",
-    "<meta property='og:title' content='JetSocket - The Best Pusher Alternative for Real-time WebSocket Applications' />",
-    "<meta property='og:site_name' content='JetSocket' />",
+    "<meta property='og:title' content='Jetsocket - The Best Pusher Alternative for Real-time WebSocket Applications' />",
+    "<meta property='og:site_name' content='Jetsocket' />",
     "<meta property='og:url' content='https://jetsocket.io' />",
-    "<meta property='og:description' content='Looking for a Pusher alternative? JetSocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
+    "<meta property='og:description' content='Looking for a Pusher alternative? Jetsocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
     "<meta property='og:image' content='https://jetsocket.io/public-banner.webp' />",
     "<meta property='og:image:width' content='1200' />",
     "<meta property='og:image:height' content='630' />",
     "<meta property='og:locale' content='en_US' />",
-    "<meta property='og:image:alt' content='JetSocket - Real-time WebSocket Applications' />",
+    "<meta property='og:image:alt' content='Jetsocket - Real-time WebSocket Applications' />",
     
     // Twitter
     "<meta name='twitter:card' content='summary_large_image' />",
     "<meta name='twitter:site' content='@jetsocket' />",
     "<meta name='twitter:creator' content='@jetsocket' />",
-    "<meta name='twitter:title' content='JetSocket - The Best Pusher Alternative for Real-time WebSocket Applications' />",
-    "<meta name='twitter:description' content='Looking for a Pusher alternative? JetSocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
+    "<meta name='twitter:title' content='Jetsocket - The Best Pusher Alternative for Real-time WebSocket Applications' />",
+    "<meta name='twitter:description' content='Looking for a Pusher alternative? Jetsocket provides a powerful, scalable, and cost-effective solution for real-time WebSocket applications. Perfect replacement for Pusher with better features and pricing.' />",
     "<meta name='twitter:image' content='https://jetsocket.io/public-banner.webp' />",
     "<meta name='twitter:image:width' content='1200' />",
     "<meta name='twitter:image:height' content='630' />",
-    "<meta name='twitter:image:alt' content='JetSocket - Real-time WebSocket Applications' />",
+    "<meta name='twitter:image:alt' content='Jetsocket - Real-time WebSocket Applications' />",
     
     // Additional SEO meta tags
     "<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />",
     "<meta name='language' content='English' />",
     "<meta name='revisit-after' content='7 days' />",
-    "<meta name='generator' content='JetSocket' />",
+    "<meta name='generator' content='Jetsocket' />",
     "<meta name='theme-color' content='#ffffff' />",
     "<meta name='mobile-web-app-capable' content='yes' />",
     "<meta name='apple-mobile-web-app-capable' content='yes' />",
     "<meta name='apple-mobile-web-app-status-bar-style' content='default' />",
-    "<meta name='apple-mobile-web-app-title' content='JetSocket' />",
+    "<meta name='apple-mobile-web-app-title' content='Jetsocket' />",
     
     // Additional SEO improvements
     "<meta name='format-detection' content='telephone=no' />",
-    "<meta name='application-name' content='JetSocket' />",
+    "<meta name='application-name' content='Jetsocket' />",
     "<meta name='msapplication-TileColor' content='#ffffff' />",
     "<meta name='msapplication-TileImage' content='/mstile-144x144.png' />",
     "<meta name='msapplication-config' content='/browserconfig.xml' />",
@@ -57,8 +57,9 @@ app OpenSaaS {
     "<link rel='canonical' href='https://jetsocket.io' />",
     
     // Favicon
-    "<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />",
-    "<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />",
+    "<link rel='icon' type='image/png' href='/favicon-96x96.png' sizes='96x96' />",
+    "<link rel='icon' type='image/svg+xml' href='/favicon.svg' />",
+    "<link rel='shortcut icon' href='/favicon.ico' />",
     "<link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />",
     "<link rel='manifest' href='/site.webmanifest' />",
     "<link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' />",

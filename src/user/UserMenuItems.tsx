@@ -17,13 +17,9 @@ export const UserMenuItems = ({ user, setMobileMenuOpen }: { user?: Partial<User
   return (
     <>
       <ul
-        className={cn('flex flex-col gap-5 border-b border-stroke py-4 dark:border-strokedark', {
-          'sm:px-6': path !== adminDashboardPath,
-          'px-6': path === adminDashboardPath,
-        })}
+        className='flex flex-col gap-5 border-b border-stroke dark:border-strokedark'
       >
-        {path === landingPagePath || path === adminDashboardPath ? (
-          <li>
+          <li className='before:content-none'>
             <WaspRouterLink
               to={routes.DashboardRoute.to}
               className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-yellow-500'
@@ -32,8 +28,7 @@ export const UserMenuItems = ({ user, setMobileMenuOpen }: { user?: Partial<User
               Dashboard
             </WaspRouterLink>
           </li>
-        ) : null}
-        <li>
+        <li className='before:content-none'>
           <WaspRouterLink
             to={routes.AccountRoute.to}
             onClick={handleMobileMenuClick}
@@ -62,7 +57,7 @@ export const UserMenuItems = ({ user, setMobileMenuOpen }: { user?: Partial<User
       </ul>
       {!!user && user.isAdmin && (
         <ul
-          className={cn('flex flex-col gap-5 border-b border-stroke py-4 dark:border-strokedark', {
+          className={cn('list-none marker:content-none flex flex-col gap-5 border-b border-stroke py-4 dark:border-strokedark', {
             'sm:px-6': path !== adminDashboardPath,
             'px-6': path === adminDashboardPath,
           })}
