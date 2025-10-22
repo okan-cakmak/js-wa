@@ -25,7 +25,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 20
+        node-version: 20.19.0
         cache: 'npm'
 
     - name: Configure AWS credentials
@@ -57,14 +57,6 @@ jobs:
       with:
         images: ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}
 
-    - name: Build and push backend image
-      uses: docker/build-push-action@v4
-      with:
-        context: .wasp/build
-        push: true
-        tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
-        labels: ${{ steps.meta-backend.outputs.labels }}
-
     - name: Deploy Backend to EC2
       uses: appleboy/ssh-action@master
       with:
@@ -72,16 +64,13 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          # Login to ECR
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
-          
+         
+          # build image in the .wasp/build/Dockerfile as wasp-app-backend
+          docker build -t wasp-app-backend .wasp/build/
           # Create docker network if it doesn't exist
           docker network create wasp-network || true
           
-          # Pull the new backend image
-          docker pull ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
-          
-          # Stop and remove the old backend container if it exists
+          # Stop and remove the previously deployed backend container if it exists
           docker stop wasp-app-backend || true
           docker rm wasp-app-backend || true
           
@@ -111,8 +100,7 @@ jobs:
             -e PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID=${{ secrets.PAYMENTS_HOBBY_SUBSCRIPTION_PLAN_ID }} \
             -e PAYMENTS_STARTUP_SUBSCRIPTION_PLAN_ID=${{ secrets.PAYMENTS_STARTUP_SUBSCRIPTION_PLAN_ID }} \
             -e PAYMENTS_SCALE_SUBSCRIPTION_PLAN_ID=${{ secrets.PAYMENTS_SCALE_SUBSCRIPTION_PLAN_ID }} \
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.BACKEND_ECR_REPOSITORY }}:${{ github.sha }}
-          
+            wasp-app-backend
           # Clean up old images
           docker image prune -f
 
@@ -123,6 +111,5 @@ jobs:
     - name: Build Frontend for Production
       run: |
         cd .wasp/build/web-app
-        npm install
         REACT_APP_API_URL=${BACKEND_URL} npm run build
         netlify deploy --dir=build --prod --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }}
