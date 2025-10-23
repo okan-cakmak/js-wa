@@ -1,6 +1,6 @@
 app OpenSaaS {
   wasp: {
-    version: "^0.16.0"
+    version: "^0.18.1"
   },
 
   title: "Jetsocket - Real-time WebSocket Applications Made Simple",
